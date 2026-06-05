@@ -6,8 +6,48 @@
     <description>Recent content on Luoj`s Markdown</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 05 Jun 2026 10:10:40 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 05 Jun 2026 15:02:00 +0800</lastBuildDate>
     <atom:link href="https://luojmarkdown.pages.dev/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>测试3</title>
+      <link>https://luojmarkdown.pages.dev/posts/test/test3/</link>
+      <pubDate>Fri, 05 Jun 2026 15:02:00 +0800</pubDate>
+      <guid>https://luojmarkdown.pages.dev/posts/test/test3/</guid>
+      <description>&lt;h1 id=&#34;测试3&#34;&gt;测试3&lt;/h1&gt;
+&lt;p&gt;这是测试分类下的第三篇文章。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>测试2</title>
+      <link>https://luojmarkdown.pages.dev/posts/test/test2/</link>
+      <pubDate>Fri, 05 Jun 2026 15:01:00 +0800</pubDate>
+      <guid>https://luojmarkdown.pages.dev/posts/test/test2/</guid>
+      <description>&lt;h1 id=&#34;测试2&#34;&gt;测试2&lt;/h1&gt;
+&lt;p&gt;这是测试分类下的第二篇文章。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>笔记2</title>
+      <link>https://luojmarkdown.pages.dev/posts/notes/note2/</link>
+      <pubDate>Fri, 05 Jun 2026 15:01:00 +0800</pubDate>
+      <guid>https://luojmarkdown.pages.dev/posts/notes/note2/</guid>
+      <description>&lt;h1 id=&#34;笔记2&#34;&gt;笔记2&lt;/h1&gt;
+&lt;p&gt;这是笔记分类下的第二篇文章。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>测试1</title>
+      <link>https://luojmarkdown.pages.dev/posts/test/test1/</link>
+      <pubDate>Fri, 05 Jun 2026 15:00:00 +0800</pubDate>
+      <guid>https://luojmarkdown.pages.dev/posts/test/test1/</guid>
+      <description>&lt;h1 id=&#34;测试1&#34;&gt;测试1&lt;/h1&gt;
+&lt;p&gt;这是测试分类下的第一篇文章。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>笔记1</title>
+      <link>https://luojmarkdown.pages.dev/posts/notes/note1/</link>
+      <pubDate>Fri, 05 Jun 2026 15:00:00 +0800</pubDate>
+      <guid>https://luojmarkdown.pages.dev/posts/notes/note1/</guid>
+      <description>&lt;h1 id=&#34;笔记1&#34;&gt;笔记1&lt;/h1&gt;
+&lt;p&gt;这是笔记分类下的第一篇文章。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>郑霖是小狗儿</title>
       <link>https://luojmarkdown.pages.dev/posts/first/</link>
