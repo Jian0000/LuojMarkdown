@@ -1,5 +1,5 @@
 baseURL = 'https://luojmarkdown.pages.dev/'
-locale = 'en-us'
-title = 'My New Hugo Project'
+locale = 'zh-cn'
+title = 'Luoj`s Markdown'
 
 theme = 'PaperMod'
