@@ -1,0 +1,17 @@
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h3>📂 文章列表</h3>
+    </div>
+    <nav class="sidebar-nav">
+        <ul>
+            {{- $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+            {{- range $pages.ByDate }}
+            <li>
+                <a href="{{ .RelPermalink }}" class="{{ if eq $.RelPermalink .RelPermalink }}active{{ end }}">
+                    {{ .Title }}
+                </a>
+            </li>
+            {{- end }}
+        </ul>
+    </nav>
+</aside>
