@@ -1,17 +1,38 @@
+{{- $postsSection := .Site.GetPage "/posts" }}
 <aside class="sidebar">
     <div class="sidebar-header">
         <h3>📂 文章列表</h3>
     </div>
     <nav class="sidebar-nav">
-        <ul>
-            {{- $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
-            {{- range $pages.ByDate }}
-            <li>
+        {{- /* 根目录下的文章（如 first.md, second.md） */}}
+        {{- with $postsSection }}
+            {{- range .RegularPages }}
+            <li class="sidebar-page">
                 <a href="{{ .RelPermalink }}" class="{{ if eq $.RelPermalink .RelPermalink }}active{{ end }}">
                     {{ .Title }}
                 </a>
             </li>
             {{- end }}
-        </ul>
+        {{- end }}
+
+        {{- /* 按分类分组的子目录文章 */}}
+        {{- range $postsSection.Sections.ByTitle }}
+        <div class="sidebar-section">
+            <details class="sidebar-details" {{ if or (eq $.RelPermalink .RelPermalink) (hasPrefix $.RelPermalink .RelPermalink) }}open{{ end }}>
+                <summary class="section-title">
+                    <span class="folder-icon">📁</span> {{ .Title }}
+                </summary>
+                <ul class="section-pages">
+                    {{- range .RegularPages.ByTitle }}
+                    <li>
+                        <a href="{{ .RelPermalink }}" class="{{ if eq $.RelPermalink .RelPermalink }}active{{ end }}">
+                            {{ .Title }}
+                        </a>
+                    </li>
+                    {{- end }}
+                </ul>
+            </details>
+        </div>
+        {{- end }}
     </nav>
 </aside>

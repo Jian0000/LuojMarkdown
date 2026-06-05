@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Posts on My New Hugo Project</title>
-    <link>http://localhost:1313/posts/</link>
-    <description>Recent content in Posts on My New Hugo Project</description>
+    <title>Posts on Luoj`s Markdown</title>
+    <link>https://luojmarkdown.pages.dev/posts/</link>
+    <description>Recent content in Posts on Luoj`s Markdown</description>
     <generator>Hugo</generator>
-    <language>en-us</language>
+    <language>zh-cn</language>
     <lastBuildDate>Fri, 05 Jun 2026 10:10:40 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://luojmarkdown.pages.dev/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>My First Post</title>
-      <link>http://localhost:1313/posts/my-first-post/</link>
+      <title>郑霖是小狗儿</title>
+      <link>https://luojmarkdown.pages.dev/posts/first/</link>
       <pubDate>Fri, 05 Jun 2026 10:10:40 +0800</pubDate>
-      <guid>http://localhost:1313/posts/my-first-post/</guid>
-      <description>&lt;p&gt;这是测试&lt;/p&gt;</description>
+      <guid>https://luojmarkdown.pages.dev/posts/first/</guid>
+      <description>&lt;h1 id=&#34;郑霖是小狗儿&#34;&gt;郑霖是小狗儿&lt;/h1&gt;
+&lt;h2 id=&#34;郑霖是小狗儿-1&#34;&gt;郑霖是小狗儿&lt;/h2&gt;
+&lt;h3 id=&#34;郑霖是小狗儿-2&#34;&gt;郑霖是小狗儿&lt;/h3&gt;
+&lt;h4 id=&#34;郑霖是小狗儿-3&#34;&gt;郑霖是小狗儿&lt;/h4&gt;
+&lt;h5 id=&#34;郑霖是小狗儿-4&#34;&gt;郑霖是小狗儿&lt;/h5&gt;</description>
+    </item>
+    <item>
+      <title>郑霖是小狗狗</title>
+      <link>https://luojmarkdown.pages.dev/posts/second/</link>
+      <pubDate>Fri, 05 Jun 2026 10:10:40 +0800</pubDate>
+      <guid>https://luojmarkdown.pages.dev/posts/second/</guid>
+      <description>&lt;h1 id=&#34;郑霖是小狗狗&#34;&gt;郑霖是小狗狗&lt;/h1&gt;
+&lt;h2 id=&#34;郑霖是小狗狗-1&#34;&gt;郑霖是小狗狗&lt;/h2&gt;
+&lt;h3 id=&#34;郑霖是小狗狗-2&#34;&gt;郑霖是小狗狗&lt;/h3&gt;
+&lt;h4 id=&#34;郑霖是小狗狗-3&#34;&gt;郑霖是小狗狗&lt;/h4&gt;
+&lt;h5 id=&#34;郑霖是小狗狗-4&#34;&gt;郑霖是小狗狗&lt;/h5&gt;</description>
     </item>
   </channel>
 </rss>
