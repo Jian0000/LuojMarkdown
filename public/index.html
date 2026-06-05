@@ -158,19 +158,35 @@
             cursor: pointer;
             user-select: none;
         }
-        .sidebar-details summary::-webkit-details-marker {
-            display: none;
+        .sidebar-details {
+            border: none;
         }
         .section-title {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 4px;
             padding: 5px 12px;
             border-radius: 6px;
             font-weight: 600;
             color: var(--primary);
             font-size: 0.95em;
+            cursor: pointer;
+            user-select: none;
+            list-style: none;
+        }
+        .section-title::-webkit-details-marker {
+            display: none;
         }
         .section-title:hover {
             background: var(--entry);
+        }
+        .section-title::before {
+            content: '▶';
+            font-size: 0.75em;
+            transition: transform 0.2s;
+        }
+        .sidebar-details[open] > .section-title::before {
+            content: '▼';
         }
         .folder-icon {
             margin-right: 4px;
@@ -258,7 +274,7 @@
                 </a>
             </li>
         <div class="sidebar-section">
-            <details class="sidebar-details" >
+            <details class="sidebar-details" open>
                 <summary class="section-title">
                     <span class="folder-icon">📁</span> 测试
                 </summary>
@@ -267,7 +283,7 @@
             </details>
         </div>
         <div class="sidebar-section">
-            <details class="sidebar-details" >
+            <details class="sidebar-details" open>
                 <summary class="section-title">
                     <span class="folder-icon">📁</span> 笔记
                 </summary>

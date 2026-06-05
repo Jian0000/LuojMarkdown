@@ -18,7 +18,7 @@
         {{- /* 按分类分组的子目录文章 */}}
         {{- range $postsSection.Sections.ByTitle }}
         <div class="sidebar-section">
-            <details class="sidebar-details" {{ if or (eq $.RelPermalink .RelPermalink) (hasPrefix $.RelPermalink .RelPermalink) }}open{{ end }}>
+            <details class="sidebar-details" open>
                 <summary class="section-title">
                     <span class="folder-icon">📁</span> {{ .Title }}
                 </summary>
