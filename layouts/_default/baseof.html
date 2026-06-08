@@ -259,7 +259,11 @@
         .topbar-logo:hover {
             text-decoration: underline;
         }
-        .topbar-theme-toggle {
+        /* ===== 背景选择器 ===== */
+        .bg-picker-wrap {
+            position: relative;
+        }
+        .topbar-bg-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -270,25 +274,107 @@
             background: transparent;
             color: var(--secondary);
             cursor: pointer;
+            font-size: 1.1em;
+            line-height: 1;
             transition: background 0.15s;
         }
-        .topbar-theme-toggle:hover {
+        .topbar-bg-btn:hover {
             background: var(--entry);
         }
-        .topbar-theme-toggle .sun {
+        .bg-picker-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            background: var(--entry);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            padding: 14px;
             display: none;
+            z-index: 1001;
         }
-        html[data-theme="dark"] .topbar-theme-toggle .sun {
-            display: inline;
+        .bg-picker-dropdown.show {
+            display: block;
         }
-        html[data-theme="dark"] .topbar-theme-toggle .moon {
-            display: none;
+        .bg-picker-title {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
         }
-        html[data-theme="light"] .topbar-theme-toggle .sun {
-            display: none;
+        .bg-picker-theme {
+            margin-bottom: 10px;
         }
-        html[data-theme="light"] .topbar-theme-toggle .moon {
-            display: inline;
+        .bg-theme-btn {
+            width: 100%;
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--theme);
+            color: var(--primary);
+            font-size: 0.82em;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .bg-theme-btn:hover {
+            background: var(--entry);
+        }
+        .bg-theme-btn .bg-theme-dark { display: none; }
+        html[data-theme="dark"] .bg-theme-btn .bg-theme-dark { display: inline; }
+        html[data-theme="dark"] .bg-theme-btn .bg-theme-light { display: none; }
+        .bg-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        .bg-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            cursor: pointer;
+            padding: 6px 4px;
+            border-radius: 8px;
+            transition: background 0.15s;
+        }
+        .bg-option:hover {
+            background: var(--theme);
+        }
+        .bg-option.active {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+        .bg-preview {
+            width: 100%;
+            aspect-ratio: 16/10;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+        .bg-option span {
+            font-size: 0.7em;
+            color: var(--secondary);
+            white-space: nowrap;
+        }
+        .bg-option.active span {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        html.has-bg-sunset { --bg-overlay: linear-gradient(135deg, rgba(255,107,107,0.08), rgba(254,202,87,0.08)); }
+        html.has-bg-ocean { --bg-overlay: linear-gradient(135deg, rgba(72,219,251,0.08), rgba(10,189,227,0.08)); }
+        html.has-bg-forest { --bg-overlay: linear-gradient(135deg, rgba(46,213,115,0.08), rgba(123,237,159,0.08)); }
+        html.has-bg-midnight { --bg-overlay: linear-gradient(135deg, rgba(44,62,80,0.12), rgba(52,152,219,0.12)); }
+        html.has-bg-lavender { --bg-overlay: linear-gradient(135deg, rgba(162,155,254,0.1), rgba(108,92,231,0.1)); }
+        html.has-bg-warm { --bg-overlay: linear-gradient(135deg, rgba(240,147,251,0.08), rgba(245,87,108,0.08)); }
+        html.has-bg-mocha { --bg-overlay: linear-gradient(135deg, rgba(212,163,112,0.1), rgba(250,237,205,0.1)); }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: var(--bg-overlay, none);
+            pointer-events: none;
+            z-index: -1;
         }
 
         .topbar-center {
@@ -441,22 +527,54 @@
         <div class="topbar-inner">
             <div class="topbar-left">
                 <a class="topbar-logo" href="{{ "" | absLangURL }}">{{ .Site.Title }}</a>
-                <button id="theme-toggle" class="topbar-theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
+                <div class="bg-picker-wrap">
+                    <button id="bgPickerBtn" class="topbar-bg-btn" title="选择背景" aria-label="Select background">
+                        👕
+                    </button>
+                    <div class="bg-picker-dropdown" id="bgPickerDropdown">
+                        <div class="bg-picker-title">选择背景</div>
+                        <div class="bg-picker-theme">
+                            <button id="theme-toggle" class="bg-theme-btn" title="切换浅色/深色模式">
+                                <span class="bg-theme-light">☀️ 浅色</span>
+                                <span class="bg-theme-dark">🌙 深色</span>
+                            </button>
+                        </div>
+                        <div class="bg-picker-grid">
+                            <div class="bg-option" data-bg="" title="默认">
+                                <div class="bg-preview" style="background:var(--theme)"></div>
+                                <span>默认</span>
+                            </div>
+                            <div class="bg-option" data-bg="gradient-sunset" title="落日">
+                                <div class="bg-preview" style="background:linear-gradient(135deg,#ff6b6b,#feca57)"></div>
+                                <span>落日</span>
+                            </div>
+                            <div class="bg-option" data-bg="gradient-ocean" title="海洋">
+                                <div class="bg-preview" style="background:linear-gradient(135deg,#48dbfb,#0abde3)"></div>
+                                <span>海洋</span>
+                            </div>
+                            <div class="bg-option" data-bg="gradient-forest" title="森林">
+                                <div class="bg-preview" style="background:linear-gradient(135deg,#2ed573,#7bed9f)"></div>
+                                <span>森林</span>
+                            </div>
+                            <div class="bg-option" data-bg="gradient-midnight" title="午夜">
+                                <div class="bg-preview" style="background:linear-gradient(135deg,#2c3e50,#3498db)"></div>
+                                <span>午夜</span>
+                            </div>
+                            <div class="bg-option" data-bg="gradient-lavender" title="薰衣草">
+                                <div class="bg-preview" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7)"></div>
+                                <span>薰衣草</span>
+                            </div>
+                            <div class="bg-option" data-bg="gradient-warm" title="暖阳">
+                                <div class="bg-preview" style="background:linear-gradient(135deg,#f093fb,#f5576c)"></div>
+                                <span>暖阳</span>
+                            </div>
+                            <div class="bg-option" data-bg="gradient-mocha" title="摩卡">
+                                <div class="bg-preview" style="background:linear-gradient(135deg,#d4a373,#faedcd)"></div>
+                                <span>摩卡</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="topbar-center">
