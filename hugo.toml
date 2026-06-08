@@ -3,3 +3,7 @@ locale = 'zh-cn'
 title = 'Luoj`s Markdown'
 
 theme = 'PaperMod'
+
+[markup.tableOfContents]
+  startLevel = 1
+  endLevel = 4

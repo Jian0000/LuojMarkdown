@@ -1,0 +1,11 @@
+{{- /* 只在文章页显示，且文章有标题才渲染 */}}
+{{- if and (eq .Kind "page") .TableOfContents }}
+<aside class="toc-sidebar" id="toc-sidebar">
+    <div class="toc-header">
+        <h3>📑 目录</h3>
+    </div>
+    <nav class="toc-nav">
+        {{ .TableOfContents }}
+    </nav>
+</aside>
+{{- end }}

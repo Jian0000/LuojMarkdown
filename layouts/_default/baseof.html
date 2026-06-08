@@ -170,6 +170,71 @@
             flex: 1;
             min-width: 0;
         }
+
+        /* 右侧大纲 */
+        .toc-sidebar {
+            width: 220px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 80px;
+            align-self: flex-start;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+            padding: 20px 0;
+            font-size: 0.85em;
+        }
+        .toc-header h3 {
+            font-size: 1em;
+            margin: 0 0 12px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary);
+        }
+        .toc-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .toc-nav li {
+            margin-bottom: 2px;
+        }
+        .toc-nav a {
+            display: block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            color: var(--secondary);
+            text-decoration: none;
+            transition: background 0.15s, color 0.15s;
+            border-left: 2px solid transparent;
+        }
+        .toc-nav a:hover {
+            background: var(--entry);
+            color: var(--primary);
+        }
+        .toc-nav a.active {
+            color: var(--primary);
+            font-weight: 500;
+            border-left-color: var(--primary);
+            background: var(--entry);
+        }
+        .toc-nav ul ul {
+            padding-left: 12px;
+        }
+        .toc-nav ul ul a {
+            font-size: 0.95em;
+        }
+        .toc-nav ul ul ul {
+            padding-left: 10px;
+        }
+        .toc-nav ul ul ul a {
+            font-size: 0.9em;
+            padding-left: 16px;
+        }
+
+        @media (max-width: 1200px) {
+            .toc-sidebar {
+                display: none;
+            }
+        }
         @media (max-width: 768px) {
             .layout-wrapper {
                 flex-direction: column;
@@ -205,10 +270,46 @@
     {{- end }}
             {{- block "main" . }}{{ end }}
         </main>
+        {{ partial "toc_sidebar.html" . }}
     {{- if not .IsHome }}
     </div>
     {{- end }}
     {{ partialCached "footer.html" . .Layout .Kind (.Param "hideFooter") (.Param "ShowCodeCopyButtons") -}}
+
+    <script>
+    /* TOC 滚动高亮 */
+    (function() {
+        var tocLinks = document.querySelectorAll('.toc-nav a[href^="#"]');
+        if (tocLinks.length === 0) return;
+        var headings = [];
+        tocLinks.forEach(function(link) {
+            var id = link.getAttribute('href').substring(1);
+            var el = document.getElementById(decodeURIComponent(id));
+            if (el) headings.push({ link: link, target: el });
+        });
+        if (headings.length === 0) return;
+
+        var observer = new IntersectionObserver(function(entries) {
+            var activeFound = false;
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting && !activeFound) {
+                    headings.forEach(function(h) { h.link.classList.remove('active'); });
+                    var match = headings.find(function(h) { return h.target === entry.target; });
+                    if (match) { match.link.classList.add('active'); activeFound = true; }
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+
+        headings.forEach(function(h) { observer.observe(h.target); });
+
+        tocLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                headings.forEach(function(h) { h.link.classList.remove('active'); });
+                link.classList.add('active');
+            });
+        });
+    })();
+    </script>
 </body>
 
 </html>
