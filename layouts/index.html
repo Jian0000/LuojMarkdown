@@ -1,15 +1,33 @@
 {{- define "main" }}
 {{- $postsSection := .Site.GetPage "/posts" }}
 
-{{- /* 欢迎区域 */}}
+{{- /* ════════════════════════════════════════════ */}}
+{{- /*  欢迎区域 —— 从 _index.md frontmatter 读取    */}}
+{{- /* ════════════════════════════════════════════ */}}
 <section class="home-hero">
-    <h1 class="home-title">{{ .Site.Title }}</h1>
-    <p class="home-subtitle">探索文章分类，点击卡片开始阅读</p>
+    {{- with .Params.greeting }}
+    <p class="home-greeting">{{ . }}</p>
+    {{- end }}
+    <h1 class="home-title">{{ .Title | default .Site.Title }}</h1>
+    <p class="home-subtitle">{{ .Description }}</p>
 </section>
 
-{{- /* 分类卡片 */}}
+{{- /* ════════════════════════════════════════════ */}}
+{{- /*  自定义区域 —— 从 _index.md 正文（Markdown）渲染 */}}
+{{- /* ════════════════════════════════════════════ */}}
+{{- if .Content }}
+<section class="home-content">
+    <div class="home-content-inner md-content">
+        {{ .Content }}
+    </div>
+</section>
+{{- end }}
+
+{{- /* ════════════════════════════════════════════ */}}
+{{- /*  分类卡片                                    */}}
+{{- /* ════════════════════════════════════════════ */}}
 <section class="home-categories">
-    {{- /* 根目录文章（如 first, second）*/}}
+    {{- /* 根目录文章 */}}
     {{- $rootPages := $postsSection.RegularPages }}
     {{- if gt (len $rootPages) 0 }}
     <div class="category-card">
@@ -44,11 +62,34 @@
     {{- end }}
 </section>
 
-{{- /* 自定义样式 */}}
+{{- /* ════════════════════════════════════════════ */}}
+{{- /*  联系方式 —— 从 _index.md params.contact 读取  */}}
+{{- /* ════════════════════════════════════════════ */}}
+{{- with .Params.contact }}
+<section class="home-contact">
+    <div class="home-contact-inner">
+        {{ . | markdownify }}
+    </div>
+</section>
+{{- end }}
+
+{{- /* ════════════════════════════════════════════ */}}
+{{- /*  样式                                       */}}
+{{- /* ════════════════════════════════════════════ */}}
 <style>
+    .main-home {
+        width: 100%;
+    }
+
+    /* 欢迎区域 */
     .home-hero {
         text-align: center;
-        padding: 40px 20px 20px;
+        padding: 50px 20px 20px;
+    }
+    .home-greeting {
+        font-size: 1.2em;
+        color: var(--secondary);
+        margin-bottom: 6px;
     }
     .home-title {
         font-size: 2em;
@@ -56,14 +97,30 @@
     }
     .home-subtitle {
         color: var(--secondary);
-        font-size: 1.1em;
+        font-size: 1.05em;
     }
+
+    /* 自定义 Markdown 内容 */
+    .home-content {
+        padding: 10px 20px 0;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .home-content-inner {
+        background: var(--entry);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px 24px;
+        line-height: 1.7;
+    }
+
+    /* 分类卡片 */
     .home-categories {
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
         justify-content: center;
-        padding: 20px 20px 40px;
+        padding: 30px 20px 30px;
         max-width: 1200px;
         margin: 0 auto;
     }
@@ -120,9 +177,20 @@
         font-weight: 500;
         margin-top: 4px;
     }
-    .main-home {
-        width: 100%;
+
+    /* 联系方式 */
+    .home-contact {
+        padding: 0 20px 40px;
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+        color: var(--secondary);
+        font-size: 0.95em;
     }
+    .home-contact a {
+        color: var(--primary);
+    }
+
     @media (max-width: 768px) {
         .home-categories {
             flex-direction: column;
@@ -131,6 +199,9 @@
         .category-card {
             width: 100%;
             max-width: 400px;
+        }
+        .home-content-inner {
+            padding: 16px 20px;
         }
     }
 </style>
