@@ -317,8 +317,19 @@
             font-size: 0.95em;
             color: var(--primary);
         }
+        .result-snippet {
+            font-size: 0.82em;
+            color: var(--tertiary);
+            margin-top: 3px;
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
         .result-section {
-            font-size: 0.8em;
+            font-size: 0.78em;
             color: var(--secondary);
             margin-top: 2px;
         }
@@ -467,11 +478,22 @@
             }
         });
 
+        function extractSnippet(text, keyword, maxLen) {
+            maxLen = maxLen || 100;
+            var idx = text.toLowerCase().indexOf(keyword.toLowerCase());
+            if (idx < 0) return text.substring(0, maxLen) + '…';
+            var start = Math.max(0, idx - Math.floor((maxLen - keyword.length) / 2));
+            var end = Math.min(text.length, start + maxLen);
+            var snippet = text.substring(start, end);
+            if (start > 0) snippet = '…' + snippet;
+            if (end < text.length) snippet = snippet + '…';
+            return snippet;
+        }
+
         function doSearch() {
             var q = input.value.trim().toLowerCase();
             if (q.length < 1) { results.classList.remove('show'); return; }
 
-            /* 本地关键词匹配 */
             var hits = [];
             searchIndex.forEach(function(page) {
                 var title = (page.title || '').toLowerCase();
@@ -503,8 +525,17 @@
                 if (count >= 8) return;
                 count++;
                 var section = page.section || '';
+                var contentText = page.content || page.summary || '';
+
+                /* 找匹配片段：优先在正文或摘要中找 */
+                var snippet = '';
+                if (contentText) {
+                    snippet = extractSnippet(contentText, q, 120);
+                }
+
                 html += '<a class="result-item" href="' + page.permalink + '">';
                 html += '<div class="result-title">' + page.title + '</div>';
+                if (snippet) html += '<div class="result-snippet">' + snippet + '</div>';
                 if (section) html += '<div class="result-section">' + section + '</div>';
                 html += '</a>';
             });
