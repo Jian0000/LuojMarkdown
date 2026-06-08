@@ -338,6 +338,12 @@
             text-align: center;
             color: var(--secondary);
         }
+        .search-hl {
+            background: var(--primary);
+            color: var(--theme);
+            padding: 1px 3px;
+            border-radius: 3px;
+        }
 
         @media (max-width: 768px) {
             .global-search-shortcut {
@@ -487,6 +493,9 @@
             var snippet = text.substring(start, end);
             if (start > 0) snippet = '…' + snippet;
             if (end < text.length) snippet = snippet + '…';
+            /* 高亮关键词 */
+            var re = new RegExp('(' + keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+            snippet = snippet.replace(re, '<mark class="search-hl">$1</mark>');
             return snippet;
         }
 
