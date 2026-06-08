@@ -1,144 +1,227 @@
 {{- define "main" }}
 {{- $postsSection := .Site.GetPage "/posts" }}
 
-{{- /* ════════════════════════════════════════════ */}}
-{{- /*  欢迎区域 —— 从 _index.md frontmatter 读取    */}}
-{{- /* ════════════════════════════════════════════ */}}
-<section class="home-hero">
-    {{- with .Params.greeting }}
-    <p class="home-greeting">{{ . }}</p>
-    {{- end }}
-    <h1 class="home-title">{{ .Title | default .Site.Title }}</h1>
-    <p class="home-subtitle">{{ .Description }}</p>
-    {{- with .Params.intro }}
-    <p class="home-intro">{{ . }}</p>
-    {{- end }}
+{{- /* 计算博客统计 */}}
+{{- $totalPosts := 0 }}
+{{- $totalWords := 0 }}
+{{- $allPosts := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+{{- range $allPosts }}
+    {{- $totalPosts = add $totalPosts 1 }}
+    {{- $totalWords = add $totalWords .WordCount }}
+{{- end }}
+{{- $totalSections := len $postsSection.Sections }}
+
+{{- /* ============================================ */}}
+{{- /*  1. 个人信息卡片                               */}}
+{{- /* ============================================ */}}
+<section class="home-profile">
+    <div class="profile-card">
+        {{- with .Params.avatar }}
+        <img class="profile-avatar" src="{{ . }}" alt="avatar">
+        {{- end }}
+        <div class="profile-info">
+            <h1 class="profile-name">{{ .Params.name | default .Site.Title }}</h1>
+            <p class="profile-bio">{{ .Params.bio | default .Description }}</p>
+            {{- with .Params.greeting }}
+            <p class="profile-greeting">{{ . }}</p>
+            {{- end }}
+        </div>
+    </div>
 </section>
 
-{{- /* ════════════════════════════════════════════ */}}
-{{- /*  自定义区域 —— 从 _index.md 正文（Markdown）渲染 */}}
-{{- /* ════════════════════════════════════════════ */}}
+{{- /* ============================================ */}}
+{{- /*  2. 关于本站                                   */}}
+{{- /* ============================================ */}}
 {{- if .Content }}
-<section class="home-content">
-    <div class="home-content-inner md-content">
+<section class="home-section home-about">
+    <h2 class="section-title">{{ .Params.aboutTitle | default "📖 关于本站" }}</h2>
+    <div class="section-body md-content">
         {{ .Content }}
     </div>
 </section>
 {{- end }}
 
-{{- /* ════════════════════════════════════════════ */}}
-{{- /*  分类卡片                                    */}}
-{{- /* ════════════════════════════════════════════ */}}
-<section class="home-categories">
-    {{- /* 根目录文章 */}}
-    {{- $rootPages := $postsSection.RegularPages }}
-    {{- if gt (len $rootPages) 0 }}
-    <div class="category-card">
-        <div class="card-icon">📝</div>
-        <h2 class="card-title">文章</h2>
-        <p class="card-count">{{ len $rootPages }} 篇文章</p>
-        <ul class="card-posts">
-            {{- range $rootPages.ByTitle }}
-            <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-            {{- end }}
-        </ul>
-    </div>
-    {{- end }}
-
-    {{- /* 子目录分类 */}}
-    {{- range $postsSection.Sections.ByTitle }}
-    {{- $firstPage := index (.RegularPages.ByDate) 0 }}
-    <a class="category-card card-link" href="{{ if $firstPage }}{{ $firstPage.RelPermalink }}{{ else }}{{ .RelPermalink }}{{ end }}">
-        <div class="card-icon">
-            {{- $t := lower .Title }}
-            {{- if or (in $t "test") (in $t "测试") }}🧪
-            {{- else if or (in $t "note") (in $t "笔记") }}📓
-            {{- else }}📁
-            {{- end }}
+{{- /* ============================================ */}}
+{{- /*  3. 博客统计                                   */}}
+{{- /* ============================================ */}}
+<section class="home-section home-stats">
+    <h2 class="section-title">📊 博客统计</h2>
+    <div class="stats-grid">
+        <div class="stat-item">
+            <span class="stat-number">{{ $totalPosts }}</span>
+            <span class="stat-label">篇文章</span>
         </div>
-        <h2 class="card-title">{{ .Title }}</h2>
-        <p class="card-count">{{ len .RegularPages }} 篇文章</p>
-        {{- if $firstPage }}
-        <p class="card-first">首篇：{{ $firstPage.Title }}</p>
-        {{- end }}
-    </a>
-    {{- end }}
+        <div class="stat-item">
+            <span class="stat-number">{{ $totalWords }}</span>
+            <span class="stat-label">总字数</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">{{ $totalSections }}</span>
+            <span class="stat-label">个分类</span>
+        </div>
+    </div>
 </section>
 
-{{- /* ════════════════════════════════════════════ */}}
-{{- /*  联系方式 —— 从 _index.md params.contact 读取  */}}
-{{- /* ════════════════════════════════════════════ */}}
+{{- /* ============================================ */}}
+{{- /*  4. 内容导航（分类卡片）                        */}}
+{{- /* ============================================ */}}
+<section class="home-section home-categories">
+    <h2 class="section-title">🗂️ 内容导航</h2>
+    <div class="categories-grid">
+        {{- /* 根目录文章 */}}
+        {{- $rootPages := $postsSection.RegularPages }}
+        {{- if gt (len $rootPages) 0 }}
+        <div class="category-card">
+            <div class="card-icon">📝</div>
+            <h3 class="card-title">文章</h3>
+            <p class="card-count">{{ len $rootPages }} 篇</p>
+            <ul class="card-posts">
+                {{- range $rootPages.ByTitle }}
+                <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+                {{- end }}
+            </ul>
+        </div>
+        {{- end }}
+
+        {{- /* 子目录分类 */}}
+        {{- range $postsSection.Sections.ByTitle }}
+        {{- $firstPage := index (.RegularPages.ByDate) 0 }}
+        <a class="category-card card-link" href="{{ if $firstPage }}{{ $firstPage.RelPermalink }}{{ else }}{{ .RelPermalink }}{{ end }}">
+            <div class="card-icon">
+                {{- $t := lower .Title }}
+                {{- if or (in $t "test") (in $t "测试") }}🧪
+                {{- else if or (in $t "note") (in $t "笔记") }}📓
+                {{- else }}📁
+                {{- end }}
+            </div>
+            <h3 class="card-title">{{ .Title }}</h3>
+            <p class="card-count">{{ len .RegularPages }} 篇</p>
+            {{- if $firstPage }}
+            <p class="card-first">首篇：{{ $firstPage.Title }}</p>
+            {{- end }}
+        </a>
+        {{- end }}
+    </div>
+</section>
+
+{{- /* ============================================ */}}
+{{- /*  5. 联系我                                    */}}
+{{- /* ============================================ */}}
 {{- with .Params.contact }}
-<section class="home-contact">
-    <div class="home-contact-inner">
+<section class="home-section home-contact">
+    <h2 class="section-title">💬 联系我</h2>
+    <div class="contact-body">
         {{ . | markdownify }}
     </div>
 </section>
 {{- end }}
 
-{{- /* ════════════════════════════════════════════ */}}
-{{- /*  样式                                       */}}
-{{- /* ════════════════════════════════════════════ */}}
+{{- /* ============================================ */}}
+{{- /*  样式                                        */}}
+{{- /* ============================================ */}}
 <style>
     .main-home {
         width: 100%;
     }
 
-    /* 欢迎区域 */
-    .home-hero {
-        text-align: center;
-        padding: 50px 20px 20px;
-    }
-    .home-greeting {
-        font-size: 1.2em;
-        color: var(--secondary);
-        margin-bottom: 6px;
-    }
-    .home-title {
-        font-size: 2em;
-        margin-bottom: 8px;
-    }
-    .home-subtitle {
-        color: var(--secondary);
-        font-size: 1.05em;
-    }
-    .home-intro {
-        color: var(--secondary);
-        font-size: 1em;
-        margin-top: 12px;
-        font-style: italic;
-    }
-
-    /* 自定义 Markdown 内容 */
-    .home-content {
-        padding: 10px 20px 0;
+    /* ---- 通用分区 ---- */
+    .home-section {
         max-width: 900px;
         margin: 0 auto;
+        padding: 20px 20px;
     }
-    .home-content-inner {
+    .section-title {
+        font-size: 1.4em;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid var(--primary);
+    }
+    .section-body {
         background: var(--entry);
         border: 1px solid var(--border);
         border-radius: 12px;
         padding: 20px 24px;
-        line-height: 1.7;
+        line-height: 1.8;
     }
 
-    /* 分类卡片 */
-    .home-categories {
+    /* ---- 1. 个人信息 ---- */
+    .home-profile {
+        padding: 30px 20px 0;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .profile-card {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        background: var(--entry);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 28px 32px;
+    }
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+    .profile-name {
+        font-size: 1.6em;
+        margin-bottom: 4px;
+    }
+    .profile-bio {
+        color: var(--secondary);
+        font-size: 1em;
+        margin-bottom: 4px;
+    }
+    .profile-greeting {
+        color: var(--primary);
+        font-size: 0.9em;
+        margin-top: 4px;
+    }
+
+    /* ---- 3. 统计 ---- */
+    .stats-grid {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+    }
+    .stat-item {
+        flex: 1;
+        max-width: 260px;
+        text-align: center;
+        background: var(--entry);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px 16px;
+    }
+    .stat-number {
+        display: block;
+        font-size: 2em;
+        font-weight: 700;
+        color: var(--primary);
+    }
+    .stat-label {
+        display: block;
+        margin-top: 4px;
+        color: var(--secondary);
+        font-size: 0.9em;
+    }
+
+    /* ---- 4. 内容导航 ---- */
+    .categories-grid {
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
         justify-content: center;
-        padding: 30px 20px 30px;
-        max-width: 1200px;
-        margin: 0 auto;
     }
     .category-card {
         background: var(--entry);
         border: 1px solid var(--border);
         border-radius: 12px;
         padding: 24px;
-        width: 280px;
+        width: 260px;
     }
     .category-card.card-link {
         text-decoration: none;
@@ -154,14 +237,14 @@
         margin-bottom: 12px;
     }
     .card-title {
-        font-size: 1.3em;
-        margin-bottom: 8px;
+        font-size: 1.2em;
+        margin-bottom: 6px;
         color: var(--primary);
     }
     .card-count {
         color: var(--secondary);
         font-size: 0.9em;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
     }
     .card-posts {
         list-style: none;
@@ -169,7 +252,7 @@
         margin: 0;
     }
     .card-posts li {
-        margin-bottom: 4px;
+        margin-bottom: 3px;
     }
     .card-posts a {
         color: var(--secondary);
@@ -184,33 +267,48 @@
         color: var(--primary);
         font-size: 0.85em;
         font-weight: 500;
-        margin-top: 4px;
     }
 
-    /* 联系方式 */
-    .home-contact {
-        padding: 0 20px 40px;
-        max-width: 900px;
-        margin: 0 auto;
+    /* ---- 5. 联系我 ---- */
+    .contact-body {
+        background: var(--entry);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px 24px;
         text-align: center;
         color: var(--secondary);
-        font-size: 0.95em;
+        font-size: 1em;
     }
-    .home-contact a {
+    .contact-body a {
         color: var(--primary);
+        text-decoration: none;
+    }
+    .contact-body a:hover {
+        text-decoration: underline;
     }
 
+    /* ---- 手机端 ---- */
     @media (max-width: 768px) {
-        .home-categories {
+        .profile-card {
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+        .stats-grid {
+            flex-direction: column;
+            align-items: center;
+        }
+        .stat-item {
+            width: 100%;
+            max-width: none;
+        }
+        .categories-grid {
             flex-direction: column;
             align-items: center;
         }
         .category-card {
             width: 100%;
             max-width: 400px;
-        }
-        .home-content-inner {
-            padding: 16px 20px;
         }
     }
 </style>
