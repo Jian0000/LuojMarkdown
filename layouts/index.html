@@ -10,6 +10,9 @@
     {{- end }}
     <h1 class="home-title">{{ .Title | default .Site.Title }}</h1>
     <p class="home-subtitle">{{ .Description }}</p>
+    {{- with .Params.intro }}
+    <p class="home-intro">{{ . }}</p>
+    {{- end }}
 </section>
 
 {{- /* ════════════════════════════════════════════ */}}
@@ -98,6 +101,12 @@
     .home-subtitle {
         color: var(--secondary);
         font-size: 1.05em;
+    }
+    .home-intro {
+        color: var(--secondary);
+        font-size: 1em;
+        margin-top: 12px;
+        font-style: italic;
     }
 
     /* 自定义 Markdown 内容 */
