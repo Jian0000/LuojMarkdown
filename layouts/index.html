@@ -1,0 +1,137 @@
+{{- define "main" }}
+{{- $postsSection := .Site.GetPage "/posts" }}
+
+{{- /* 欢迎区域 */}}
+<section class="home-hero">
+    <h1 class="home-title">{{ .Site.Title }}</h1>
+    <p class="home-subtitle">探索文章分类，点击卡片开始阅读</p>
+</section>
+
+{{- /* 分类卡片 */}}
+<section class="home-categories">
+    {{- /* 根目录文章（如 first, second）*/}}
+    {{- $rootPages := $postsSection.RegularPages }}
+    {{- if gt (len $rootPages) 0 }}
+    <div class="category-card">
+        <div class="card-icon">📝</div>
+        <h2 class="card-title">文章</h2>
+        <p class="card-count">{{ len $rootPages }} 篇文章</p>
+        <ul class="card-posts">
+            {{- range $rootPages.ByTitle }}
+            <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+            {{- end }}
+        </ul>
+    </div>
+    {{- end }}
+
+    {{- /* 子目录分类 */}}
+    {{- range $postsSection.Sections.ByTitle }}
+    {{- $firstPage := index (.RegularPages.ByDate) 0 }}
+    <a class="category-card card-link" href="{{ if $firstPage }}{{ $firstPage.RelPermalink }}{{ else }}{{ .RelPermalink }}{{ end }}">
+        <div class="card-icon">
+            {{- $t := lower .Title }}
+            {{- if or (in $t "test") (in $t "测试") }}🧪
+            {{- else if or (in $t "note") (in $t "笔记") }}📓
+            {{- else }}📁
+            {{- end }}
+        </div>
+        <h2 class="card-title">{{ .Title }}</h2>
+        <p class="card-count">{{ len .RegularPages }} 篇文章</p>
+        {{- if $firstPage }}
+        <p class="card-first">首篇：{{ $firstPage.Title }}</p>
+        {{- end }}
+    </a>
+    {{- end }}
+</section>
+
+{{- /* 自定义样式 */}}
+<style>
+    .home-hero {
+        text-align: center;
+        padding: 40px 20px 20px;
+    }
+    .home-title {
+        font-size: 2em;
+        margin-bottom: 8px;
+    }
+    .home-subtitle {
+        color: var(--secondary);
+        font-size: 1.1em;
+    }
+    .home-categories {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 20px 20px 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .category-card {
+        background: var(--entry);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px;
+        width: 280px;
+    }
+    .category-card.card-link {
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .category-card.card-link:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    .card-icon {
+        font-size: 2em;
+        margin-bottom: 12px;
+    }
+    .card-title {
+        font-size: 1.3em;
+        margin-bottom: 8px;
+        color: var(--primary);
+    }
+    .card-count {
+        color: var(--secondary);
+        font-size: 0.9em;
+        margin-bottom: 12px;
+    }
+    .card-posts {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .card-posts li {
+        margin-bottom: 4px;
+    }
+    .card-posts a {
+        color: var(--secondary);
+        text-decoration: none;
+        font-size: 0.9em;
+    }
+    .card-posts a:hover {
+        color: var(--primary);
+        text-decoration: underline;
+    }
+    .card-first {
+        color: var(--primary);
+        font-size: 0.85em;
+        font-weight: 500;
+        margin-top: 4px;
+    }
+    .main-home {
+        width: 100%;
+    }
+    @media (max-width: 768px) {
+        .home-categories {
+            flex-direction: column;
+            align-items: center;
+        }
+        .category-card {
+            width: 100%;
+            max-width: 400px;
+        }
+    }
+</style>
+{{- end }}

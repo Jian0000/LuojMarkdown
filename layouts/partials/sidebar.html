@@ -4,7 +4,7 @@
         <h3>📂 文章列表</h3>
     </div>
     <nav class="sidebar-nav">
-        {{- /* 根目录下的文章（如 first.md, second.md） */}}
+        {{- /* 根目录下的文章 */}}
         {{- with $postsSection }}
             {{- range .RegularPages }}
             <li class="sidebar-page">
@@ -17,10 +17,13 @@
 
         {{- /* 按分类分组的子目录文章 */}}
         {{- range $postsSection.Sections.ByTitle }}
+        {{- $firstPage := index (.RegularPages.ByDate) 0 }}
         <div class="sidebar-section">
             <details class="sidebar-details" open>
-                <summary class="section-title">
-                    <span class="folder-icon">📁</span> {{ .Title }}
+                <summary class="section-title-wrapper">
+                    <span class="expand-icon" onclick="event.stopPropagation()">▶</span>
+                    <span class="folder-icon">📁</span>
+                    <a class="section-link" href="{{ if $firstPage }}{{ $firstPage.RelPermalink }}{{ else }}{{ .RelPermalink }}{{ end }}">{{ .Title }}</a>
                 </summary>
                 <ul class="section-pages">
                     {{- range .RegularPages.ByTitle }}

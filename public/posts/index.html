@@ -189,6 +189,45 @@
         .sidebar-details[open] > .section-title::before {
             content: '▼';
         }
+        .section-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95em;
+            cursor: pointer;
+            user-select: none;
+            list-style: none;
+            transition: background 0.15s;
+        }
+        .section-title-wrapper::-webkit-details-marker {
+            display: none;
+        }
+        .section-title-wrapper:hover {
+            background: var(--entry);
+        }
+        .section-title-wrapper .expand-icon {
+            font-size: 0.7em;
+            color: var(--secondary);
+            flex-shrink: 0;
+            pointer-events: none;
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+        .sidebar-details[open] > .section-title-wrapper .expand-icon {
+            transform: rotate(90deg);
+        }
+        .section-title-wrapper .section-link {
+            text-decoration: none;
+            color: var(--primary);
+            flex: 1;
+            min-width: 0;
+        }
+        .section-title-wrapper .section-link:hover {
+            text-decoration: underline;
+        }
         .folder-icon {
             margin-right: 4px;
         }
@@ -257,7 +296,8 @@
         </ul>
     </nav>
 </header>
-<div class="layout-wrapper">
+
+    <div class="layout-wrapper">
         
 <aside class="sidebar">
     <div class="sidebar-header">
@@ -266,18 +306,20 @@
     <nav class="sidebar-nav">
             <li class="sidebar-page">
                 <a href="/posts/first/" class="">
-                    郑霖是小狗儿
+                    test1
                 </a>
             </li>
             <li class="sidebar-page">
                 <a href="/posts/second/" class="">
-                    郑霖是小狗狗
+                    test2
                 </a>
             </li>
         <div class="sidebar-section">
             <details class="sidebar-details" open>
-                <summary class="section-title">
-                    <span class="folder-icon">📁</span> 测试
+                <summary class="section-title-wrapper">
+                    <span class="expand-icon" onclick="event.stopPropagation()">▶</span>
+                    <span class="folder-icon">📁</span>
+                    <a class="section-link" href="/posts/test/test1/">测试</a>
                 </summary>
                 <ul class="section-pages">
                     <li>
@@ -300,8 +342,36 @@
         </div>
         <div class="sidebar-section">
             <details class="sidebar-details" open>
-                <summary class="section-title">
-                    <span class="folder-icon">📁</span> 笔记
+                <summary class="section-title-wrapper">
+                    <span class="expand-icon" onclick="event.stopPropagation()">▶</span>
+                    <span class="folder-icon">📁</span>
+                    <a class="section-link" href="/posts/test2/test1/">测试2</a>
+                </summary>
+                <ul class="section-pages">
+                    <li>
+                        <a href="/posts/test2/test1/" class="">
+                            测试1
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/posts/test2/test2/" class="">
+                            测试2
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/posts/test2/test3/" class="">
+                            测试3
+                        </a>
+                    </li>
+                </ul>
+            </details>
+        </div>
+        <div class="sidebar-section">
+            <details class="sidebar-details" open>
+                <summary class="section-title-wrapper">
+                    <span class="expand-icon" onclick="event.stopPropagation()">▶</span>
+                    <span class="folder-icon">📁</span>
+                    <a class="section-link" href="/posts/notes/note1/">笔记</a>
                 </summary>
                 <ul class="section-pages">
                     <li>
@@ -329,30 +399,30 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">郑霖是小狗儿
+    <h2 class="entry-hint-parent">test1
     </h2>
   </header>
   <div class="entry-content">
-    <p>郑霖是小狗儿 郑霖是小狗儿 郑霖是小狗儿 郑霖是小狗儿 郑霖是小狗儿</p>
+    <p></p>
   </div>
   <footer class="entry-footer">
 
 <span title='2026-06-05 10:10:40 +0800 CST'>June 5, 2026</span></footer>
-  <a class="entry-link" aria-label="post link to 郑霖是小狗儿" href="https://luojmarkdown.pages.dev/posts/first/"></a>
+  <a class="entry-link" aria-label="post link to test1" href="https://luojmarkdown.pages.dev/posts/first/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">郑霖是小狗狗
+    <h2 class="entry-hint-parent">test2
     </h2>
   </header>
   <div class="entry-content">
-    <p>郑霖是小狗狗 郑霖是小狗狗 郑霖是小狗狗 郑霖是小狗狗 郑霖是小狗狗</p>
+    <p></p>
   </div>
   <footer class="entry-footer">
 
 <span title='2026-06-05 10:10:40 +0800 CST'>June 5, 2026</span></footer>
-  <a class="entry-link" aria-label="post link to 郑霖是小狗狗" href="https://luojmarkdown.pages.dev/posts/second/"></a>
+  <a class="entry-link" aria-label="post link to test2" href="https://luojmarkdown.pages.dev/posts/second/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -367,6 +437,20 @@
 
 <span title='2026-06-05 15:02:00 +0800 CST'>June 5, 2026</span></footer>
   <a class="entry-link" aria-label="post link to 测试" href="https://luojmarkdown.pages.dev/posts/test/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">测试2
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p></p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-06-05 15:02:00 +0800 CST'>June 5, 2026</span></footer>
+  <a class="entry-link" aria-label="post link to 测试2" href="https://luojmarkdown.pages.dev/posts/test2/"></a>
 </article>
 
 <article class="post-entry"> 

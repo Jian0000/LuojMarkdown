@@ -11,10 +11,19 @@
     <loc>https://luojmarkdown.pages.dev/posts/test/</loc>
     <lastmod>2026-06-05T15:02:00+08:00</lastmod>
   </url><url>
+    <loc>https://luojmarkdown.pages.dev/posts/test2/</loc>
+    <lastmod>2026-06-05T15:02:00+08:00</lastmod>
+  </url><url>
     <loc>https://luojmarkdown.pages.dev/posts/test/test3/</loc>
     <lastmod>2026-06-05T15:02:00+08:00</lastmod>
   </url><url>
+    <loc>https://luojmarkdown.pages.dev/posts/test2/test3/</loc>
+    <lastmod>2026-06-05T15:02:00+08:00</lastmod>
+  </url><url>
     <loc>https://luojmarkdown.pages.dev/posts/test/test2/</loc>
+    <lastmod>2026-06-05T15:01:00+08:00</lastmod>
+  </url><url>
+    <loc>https://luojmarkdown.pages.dev/posts/test2/test2/</loc>
     <lastmod>2026-06-05T15:01:00+08:00</lastmod>
   </url><url>
     <loc>https://luojmarkdown.pages.dev/posts/notes/</loc>
@@ -24,6 +33,9 @@
     <lastmod>2026-06-05T15:01:00+08:00</lastmod>
   </url><url>
     <loc>https://luojmarkdown.pages.dev/posts/test/test1/</loc>
+    <lastmod>2026-06-05T15:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://luojmarkdown.pages.dev/posts/test2/test1/</loc>
     <lastmod>2026-06-05T15:00:00+08:00</lastmod>
   </url><url>
     <loc>https://luojmarkdown.pages.dev/posts/notes/note1/</loc>

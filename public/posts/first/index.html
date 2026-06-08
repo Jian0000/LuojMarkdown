@@ -5,13 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>郑霖是小狗儿 | Luoj`s Markdown</title>
+<title>test1 | Luoj`s Markdown</title>
 <meta name="keywords" content="">
-<meta name="description" content="郑霖是小狗儿
-郑霖是小狗儿
-郑霖是小狗儿
-郑霖是小狗儿
-郑霖是小狗儿">
+<meta name="description" content="">
 <meta name="author" content="">
 <link rel="canonical" href="https://luojmarkdown.pages.dev/posts/first/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.89ca4972ab5e6aaa05e9a0dae0c4bb64b26585bc79e36f5cf33614eea0283abe.css" integrity="sha256-icpJcqteaqoF6aDa4MS7ZLJlhbx5429c8zYU7qAoOr4=" rel="preload stylesheet" as="style">
@@ -70,8 +66,7 @@
 
 </script><meta property="og:url" content="https://luojmarkdown.pages.dev/posts/first/">
   <meta property="og:site_name" content="Luoj`s Markdown">
-  <meta property="og:title" content="郑霖是小狗儿">
-  <meta property="og:description" content="郑霖是小狗儿 郑霖是小狗儿 郑霖是小狗儿 郑霖是小狗儿 郑霖是小狗儿">
+  <meta property="og:title" content="test1">
   <meta property="og:locale" content="zh_cn">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -79,8 +74,7 @@
     <meta property="article:modified_time" content="2026-06-05T10:10:40+08:00">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="郑霖是小狗儿">
-  <meta name="twitter:description" content="郑霖是小狗儿 郑霖是小狗儿 郑霖是小狗儿 郑霖是小狗儿 郑霖是小狗儿">
+  <meta name="twitter:title" content="test1">
 
 
 <script type="application/ld+json">
@@ -97,7 +91,7 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "郑霖是小狗儿",
+      "name": "test1",
       "item": "https://luojmarkdown.pages.dev/posts/first/"
     }
   ]
@@ -107,14 +101,14 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "郑霖是小狗儿",
-  "name": "郑霖是小狗儿",
-  "description": "郑霖是小狗儿 郑霖是小狗儿 郑霖是小狗儿 郑霖是小狗儿 郑霖是小狗儿",
+  "headline": "test1",
+  "name": "test1",
+  "description": "",
   "keywords": [
     
   ],
-  "articleBody": "郑霖是小狗儿 郑霖是小狗儿 郑霖是小狗儿 郑霖是小狗儿 郑霖是小狗儿 ",
-  "wordCount" : "5",
+  "articleBody": " ",
+  "wordCount" : "0",
   "inLanguage": "en",
   "datePublished": "2026-06-05T10:10:40+08:00",
   "dateModified": "2026-06-05T10:10:40+08:00",
@@ -232,6 +226,45 @@
         .sidebar-details[open] > .section-title::before {
             content: '▼';
         }
+        .section-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95em;
+            cursor: pointer;
+            user-select: none;
+            list-style: none;
+            transition: background 0.15s;
+        }
+        .section-title-wrapper::-webkit-details-marker {
+            display: none;
+        }
+        .section-title-wrapper:hover {
+            background: var(--entry);
+        }
+        .section-title-wrapper .expand-icon {
+            font-size: 0.7em;
+            color: var(--secondary);
+            flex-shrink: 0;
+            pointer-events: none;
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+        .sidebar-details[open] > .section-title-wrapper .expand-icon {
+            transform: rotate(90deg);
+        }
+        .section-title-wrapper .section-link {
+            text-decoration: none;
+            color: var(--primary);
+            flex: 1;
+            min-width: 0;
+        }
+        .section-title-wrapper .section-link:hover {
+            text-decoration: underline;
+        }
         .folder-icon {
             margin-right: 4px;
         }
@@ -300,7 +333,8 @@
         </ul>
     </nav>
 </header>
-<div class="layout-wrapper">
+
+    <div class="layout-wrapper">
         
 <aside class="sidebar">
     <div class="sidebar-header">
@@ -309,18 +343,20 @@
     <nav class="sidebar-nav">
             <li class="sidebar-page">
                 <a href="/posts/first/" class="active">
-                    郑霖是小狗儿
+                    test1
                 </a>
             </li>
             <li class="sidebar-page">
                 <a href="/posts/second/" class="">
-                    郑霖是小狗狗
+                    test2
                 </a>
             </li>
         <div class="sidebar-section">
             <details class="sidebar-details" open>
-                <summary class="section-title">
-                    <span class="folder-icon">📁</span> 测试
+                <summary class="section-title-wrapper">
+                    <span class="expand-icon" onclick="event.stopPropagation()">▶</span>
+                    <span class="folder-icon">📁</span>
+                    <a class="section-link" href="/posts/test/test1/">测试</a>
                 </summary>
                 <ul class="section-pages">
                     <li>
@@ -343,8 +379,36 @@
         </div>
         <div class="sidebar-section">
             <details class="sidebar-details" open>
-                <summary class="section-title">
-                    <span class="folder-icon">📁</span> 笔记
+                <summary class="section-title-wrapper">
+                    <span class="expand-icon" onclick="event.stopPropagation()">▶</span>
+                    <span class="folder-icon">📁</span>
+                    <a class="section-link" href="/posts/test2/test1/">测试2</a>
+                </summary>
+                <ul class="section-pages">
+                    <li>
+                        <a href="/posts/test2/test1/" class="">
+                            测试1
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/posts/test2/test2/" class="">
+                            测试2
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/posts/test2/test3/" class="">
+                            测试3
+                        </a>
+                    </li>
+                </ul>
+            </details>
+        </div>
+        <div class="sidebar-section">
+            <details class="sidebar-details" open>
+                <summary class="section-title-wrapper">
+                    <span class="expand-icon" onclick="event.stopPropagation()">▶</span>
+                    <span class="folder-icon">📁</span>
+                    <a class="section-link" href="/posts/notes/note1/">笔记</a>
                 </summary>
                 <ul class="section-pages">
                     <li>
@@ -369,7 +433,7 @@
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      郑霖是小狗儿
+      test1
     </h1>
     <div class="post-meta">
 
@@ -377,11 +441,7 @@
 
 </div>
   </header> 
-  <div class="post-content md-content"><h1 id="郑霖是小狗儿">郑霖是小狗儿<a hidden class="anchor" aria-hidden="true" href="#郑霖是小狗儿">#</a></h1>
-<h2 id="郑霖是小狗儿-1">郑霖是小狗儿<a hidden class="anchor" aria-hidden="true" href="#郑霖是小狗儿-1">#</a></h2>
-<h3 id="郑霖是小狗儿-2">郑霖是小狗儿<a hidden class="anchor" aria-hidden="true" href="#郑霖是小狗儿-2">#</a></h3>
-<h4 id="郑霖是小狗儿-3">郑霖是小狗儿<a hidden class="anchor" aria-hidden="true" href="#郑霖是小狗儿-3">#</a></h4>
-<h5 id="郑霖是小狗儿-4">郑霖是小狗儿<a hidden class="anchor" aria-hidden="true" href="#郑霖是小狗儿-4">#</a></h5>
+  <div class="post-content md-content"><h5></h5>
 
 
   </div>
