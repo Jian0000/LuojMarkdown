@@ -4,7 +4,7 @@ description = "探索文章分类，点击卡片开始阅读"
 
 [params]
   # === 个人信息 ===
-  avatar = "/pic/avatar.jpg"       # 把图片命名为 avatar.jpg 放入 static/pic/
+  avatar = "/pic/profile.jpg"       # 头像路径，图片在 static/pic/ 下
   name = "Jay Luo"
   bio = "记录学习笔记、技术分享和生活随想"
 
