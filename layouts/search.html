@@ -1,0 +1,104 @@
+{{- define "main" }}
+
+<div id="searchbox" class="searchbox-wrapper">
+    <div class="searchbox-inner">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input id="searchInput" disabled placeholder="{{ .Params.placeholder | default "输入关键词搜索文章..." }}"
+            aria-label="search" type="search" autocomplete="off" maxlength="64">
+        <kbd class="search-hint">↵ 搜索</kbd>
+    </div>
+    <ul id="searchResults" class="searchResults" aria-label="search results"></ul>
+</div>
+
+<style>
+    .searchbox-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    .searchbox-inner {
+        position: sticky;
+        top: 70px;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--theme);
+        border: 2px solid var(--primary);
+        border-radius: 10px;
+        padding: 8px 16px;
+        transition: box-shadow 0.2s;
+    }
+    .searchbox-inner:focus-within {
+        box-shadow: 0 0 0 3px var(--primary);
+    }
+    .search-icon {
+        flex-shrink: 0;
+        color: var(--secondary);
+    }
+    .searchbox-inner input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        color: var(--primary);
+        font-size: 1.05em;
+        padding: 6px 0;
+        outline: none;
+    }
+    .searchbox-inner input::placeholder {
+        color: var(--tertiary);
+    }
+    .search-hint {
+        flex-shrink: 0;
+        font-size: 0.75em;
+        padding: 2px 8px;
+        border-radius: 4px;
+        background: var(--entry);
+        color: var(--secondary);
+        border: 1px solid var(--border);
+    }
+    .searchResults {
+        margin: 20px 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .searchResults li {
+        list-style: none;
+        border-radius: 8px;
+        padding: 14px 18px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--entry);
+        border: 1px solid var(--border);
+        transition: transform 0.2s, border-color 0.2s;
+    }
+    .searchResults li:hover,
+    .searchResults li:focus-within {
+        transform: translateY(-2px);
+        border-color: var(--tertiary);
+    }
+    .searchResults li .entry-link:focus {
+        outline: 2px solid var(--secondary);
+        outline-offset: -2px;
+    }
+    @media (max-width: 768px) {
+        .search-hint { display: none; }
+    }
+</style>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const sInput = document.getElementById('searchInput');
+        if (sInput) sInput.disabled = false;
+    });
+</script>
+
+{{- end }}

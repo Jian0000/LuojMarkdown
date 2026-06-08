@@ -7,3 +7,12 @@ theme = 'PaperMod'
 [markup.tableOfContents]
   startLevel = 1
   endLevel = 4
+
+[outputs]
+  home = ['HTML', 'RSS', 'JSON']
+
+[[menu.main]]
+  identifier = 'search'
+  name = '🔍 搜索'
+  url = '/search/'
+  weight = 10
