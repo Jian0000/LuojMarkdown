@@ -225,6 +225,114 @@
                 margin-left: 12px !important;
             }
         }
+
+        /* ===== 全局搜索栏 ===== */
+        .global-search {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            background: var(--theme);
+            border-bottom: 1px solid var(--border);
+            padding: 8px 20px;
+        }
+        .global-search-inner {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .global-search-input {
+            width: 100%;
+            padding: 10px 16px 10px 40px;
+            border: 2px solid var(--tertiary);
+            border-radius: 8px;
+            background: var(--entry);
+            color: var(--primary);
+            font-size: 0.95em;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+        .global-search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+        }
+        .global-search-input::placeholder {
+            color: var(--tertiary);
+        }
+        .global-search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary);
+            pointer-events: none;
+        }
+        .global-search-shortcut {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7em;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: var(--theme);
+            color: var(--tertiary);
+            border: 1px solid var(--border);
+            pointer-events: none;
+        }
+        .global-search-results {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: var(--entry);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+        .global-search-results.show {
+            display: block;
+        }
+        .global-search-results .result-item {
+            display: block;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: inherit;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.1s;
+        }
+        .global-search-results .result-item:last-child {
+            border-bottom: none;
+        }
+        .global-search-results .result-item:hover,
+        .global-search-results .result-item.active {
+            background: var(--theme);
+        }
+        .result-title {
+            font-weight: 500;
+            font-size: 0.95em;
+            color: var(--primary);
+        }
+        .result-section {
+            font-size: 0.8em;
+            color: var(--secondary);
+            margin-top: 2px;
+        }
+        .result-empty {
+            padding: 20px;
+            text-align: center;
+            color: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            .global-search-shortcut {
+                display: none;
+            }
+        }
     </style>
 </head>
 
@@ -234,6 +342,16 @@
 <body id="top">
 {{- end }}
     {{ partialCached "header.html" . .Page -}}
+
+    <div class="global-search" id="globalSearch">
+        <div class="global-search-inner">
+            <svg class="global-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input class="global-search-input" id="globalSearchInput" type="search" placeholder="搜索文章..." autocomplete="off" spellcheck="false">
+            <span class="global-search-shortcut">Ctrl+K</span>
+            <div class="global-search-results" id="globalSearchResults"></div>
+        </div>
+    </div>
+
     {{- if not .IsHome }}
     <div class="layout-wrapper">
         {{ partial "sidebar.html" . }}
@@ -281,6 +399,118 @@
                 link.classList.add('active');
             });
         });
+    })();
+    </script>
+
+    <script>
+    /* ===== 全局搜索 ===== */
+    (function() {
+        var input = document.getElementById('globalSearchInput');
+        var results = document.getElementById('globalSearchResults');
+        if (!input) return;
+
+        var searchIndex = [];
+
+        /* 加载搜索索引 */
+        fetch('{{ "/index.json" | relURL }}')
+            .then(function(r) { return r.json(); })
+            .then(function(data) { searchIndex = data; })
+            .catch(function() {});
+
+        /* 快捷键聚焦：Ctrl+K 或 Cmd+K */
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                input.focus();
+            }
+            /* Escape 关闭 */
+            if (e.key === 'Escape') {
+                input.blur();
+                results.classList.remove('show');
+            }
+        });
+
+        /* 输入时搜索 */
+        var debounceTimer;
+        input.addEventListener('input', function() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(doSearch, 150);
+        });
+
+        /* 聚焦/失焦 */
+        input.addEventListener('focus', function() {
+            if (input.value.trim()) doSearch();
+        });
+        input.addEventListener('blur', function() {
+            setTimeout(function() { results.classList.remove('show'); }, 200);
+        });
+
+        /* 键盘导航 */
+        input.addEventListener('keydown', function(e) {
+            var items = results.querySelectorAll('.result-item');
+            var active = results.querySelector('.result-item.active');
+            var idx = -1;
+            if (active) idx = Array.prototype.indexOf.call(items, active);
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                var next = idx < items.length - 1 ? items[idx + 1] : items[0];
+                if (active) active.classList.remove('active');
+                next.classList.add('active');
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                var prev = idx > 0 ? items[idx - 1] : items[items.length - 1];
+                if (active) active.classList.remove('active');
+                prev.classList.add('active');
+            } else if (e.key === 'Enter') {
+                if (active) { window.location.href = active.getAttribute('href'); }
+            }
+        });
+
+        function doSearch() {
+            var q = input.value.trim().toLowerCase();
+            if (q.length < 1) { results.classList.remove('show'); return; }
+
+            /* 本地关键词匹配 */
+            var hits = [];
+            searchIndex.forEach(function(page) {
+                var title = (page.title || '').toLowerCase();
+                var summary = (page.summary || '').toLowerCase();
+                var tags = (page.tags || []).join(' ').toLowerCase();
+                var content = (page.content || '').toLowerCase();
+
+                if (title.indexOf(q) >= 0 || summary.indexOf(q) >= 0 || tags.indexOf(q) >= 0 || content.indexOf(q) >= 0) {
+                    hits.push(page);
+                }
+            });
+
+            if (hits.length === 0) {
+                results.innerHTML = '<div class="result-empty">未找到相关文章</div>';
+                results.classList.add('show');
+                return;
+            }
+
+            /* 标题匹配优先排序 */
+            hits.sort(function(a, b) {
+                var aT = (a.title || '').toLowerCase().indexOf(q) >= 0 ? 0 : 1;
+                var bT = (b.title || '').toLowerCase().indexOf(q) >= 0 ? 0 : 1;
+                return aT - bT;
+            });
+
+            var html = '';
+            var count = 0;
+            hits.forEach(function(page) {
+                if (count >= 8) return;
+                count++;
+                var section = page.section || '';
+                html += '<a class="result-item" href="' + page.permalink + '">';
+                html += '<div class="result-title">' + page.title + '</div>';
+                if (section) html += '<div class="result-section">' + section + '</div>';
+                html += '</a>';
+            });
+            results.innerHTML = html;
+            results.classList.add('show');
+        }
     })();
     </script>
 </body>
