@@ -149,3 +149,56 @@ hugo server -D    # -D 包含草稿
 ```
 
 访问 `http://localhost:1313/`
+
+---
+
+## 问题排查记录
+
+### 问题 1：网站显示 Hugo 默认页面，没有自己写的文章
+
+| 项目 | 内容 |
+|------|------|
+| **现象** | 浏览器打开博客，显示 Hugo 初始化的空页面，而非测试文章 |
+| **原因** | 文章 frontmatter 中 `draft = true`，Hugo 生产构建默认跳过草稿 |
+| **解决** | 将 `draft = true` 改为 `draft = false` |
+
+### 问题 2：新建 `.md` 文章不渲染
+
+| 项目 | 内容 |
+|------|------|
+| **现象** | 新建文章 push 后，Cloudflare 构建成功但页面不存在 |
+| **原因** | 文章 frontmatter 缺少开头的 `+++`，Hugo 未能识别文章元数据 |
+| **解决** | 确保每篇文章以 `+++` 开头、`+++` 结尾包裹 frontmatter |
+
+### 问题 3：文章 `date` 设为未来时间导致不渲染
+
+| 项目 | 内容 |
+|------|------|
+| **现象** | 文章文件格式正确，`draft = false`，但 Hugo 跳过不渲染 |
+| **原因** | Hugo 将 `date` 作为 `publishDate`，如果时间还没到（哪怕只差 1 分钟），视为"未发布"而跳过 |
+| **解决** | `date` 使用**过去时间**，不要设为未来。特殊情况可构建时加 `--buildFuture` |
+
+### 问题 4：PowerShell 创建的文件带 BOM，Hugo 识别异常
+
+| 项目 | 内容 |
+|------|------|
+| **现象** | 用 `Set-Content -Encoding utf8` 创建的文章不渲染 |
+| **原因** | PowerShell `Set-Content -Encoding utf8` 自动在文件头部添加 UTF-8 BOM（`EF BB BF`），部分 Hugo 版本对此敏感 |
+| **解决** | 用 VS Code 等编辑器创建文件，或用 `Write` 工具创建、保存为 UTF-8 无 BOM |
+
+### 问题 5：Cloudflare Pages 修改不生效（最坑）
+
+| 项目 | 内容 |
+|------|------|
+| **现象** | GitHub 代码已更新，本地构建正常，但线上页面无变化 |
+| **根本原因** | 两个原因叠加：① PaperMod 主题是 **git submodule**，Cloudflare Pages 默认不拉取子模块，导致 `hugo` 构建失败；② 之前能成功是因为 `public/` 目录（构建产物）也提交到了仓库中，Cloudflare 直接用现成文件，根本没跑 Hugo |
+| **解决** | 1. Cloudflare Pages → Settings → Build & Deploy → 勾选 **Include Git Submodules** 2. 将 `public/` 加入 `.gitignore`，不再提交构建产物到仓库 |
+
+### 问题 6：侧边栏分类目录不显示子文章
+
+| 项目 | 内容 |
+|------|------|
+| **现象** | 侧边栏看到分类名（测试、笔记），但展开后没有文章 |
+| **原因** | 同问题 3 —— 子目录文章 `date` 设在了当前时间之后 |
+| **解决** | 将所有文章 `date` 改为已过去的时间点 |
+
