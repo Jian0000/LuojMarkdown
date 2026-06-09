@@ -5,7 +5,7 @@
     </div>
     <nav class="sidebar-nav">
         {{- /* 根目录文章（直接属于 /posts 的页面） */}}
-        {{- range $postsSection.Pages }}
+        {{- range $postsSection.Pages.ByTitle }}
             {{- if eq .Kind "page" }}
             <li class="sidebar-page">
                 <a href="{{ .RelPermalink }}" class="{{ if eq $.RelPermalink .RelPermalink }}active{{ end }}">
@@ -19,7 +19,7 @@
         {{- range $postsSection.Sections.ByTitle }}
         {{- $section := . }}
         {{- $directPages := slice }}
-        {{- range .Pages }}
+        {{- range .Pages.ByTitle }}
             {{- if eq .Kind "page" }}
                 {{- $directPages = $directPages | append . }}
             {{- end }}
@@ -47,7 +47,7 @@
                     {{- /* 子分类 */}}
                     {{- range $subSections }}
                     {{- $subDirectPages := slice }}
-                    {{- range .Pages }}
+                    {{- range .Pages.ByTitle }}
                         {{- if eq .Kind "page" }}
                             {{- $subDirectPages = $subDirectPages | append . }}
                         {{- end }}
