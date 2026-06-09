@@ -150,3 +150,76 @@ git commit -m "chore: 移除 public/ 构建产物"
 {{ $t := lower .Title }}
 {{ if or (in $t "test") (in $t "测试") }}  // 每次只传 2 个
 ```
+
+---
+
+## 8. 背景渐变切换不生效
+
+**现象：** 点击背景选择器中的渐变色，页面毫无变化。
+
+**原因（两层）：**
+1. `body::before` 伪元素设置了 `z-index: -1`，被 `body` 的背景色完全遮住
+2. 渐变透明度太低（8%），即使没被遮也几乎看不见
+
+**解决：**
+- 改为直接应用到 `body`：`background: var(--bg-overlay, none), var(--theme)`
+- 透明度从 8% 提高到 20%
+
+---
+
+## 9. 侧边栏不支持多层嵌套 section
+
+**现象：** 三层目录结构下（如 安卓应用 → Java基础 → 文章），侧边栏所有文章混在一起显示，分类层级丢失。
+
+**原因：**
+- `.RegularPages` 返回所有后代页面（含嵌套子 section 的文章），不是直接子页面
+- 没有 `_index.md` 的子目录不被 Hugo 识别为 section
+
+**解决：**
+- 创建所有子目录的 `_index.md` 文件
+- 侧边栏改用 `.Pages` 过滤 `.Kind = "page"` 获取直接子页面
+- 手动递归渲染子 section 的层级结构
+
+---
+
+## 10. `_index.md` 缺失导致 Hugo 不识别子 section
+
+**现象：** `hugo list all` 只列出顶级 section，子目录（如 `01-Java基础`）不被识别。
+
+**原因：** Hugo 只将含 `_index.md` 的目录视为 section。没有 `_index.md` 的目录只是"分支"，其内页面归属到最近的上级 section。
+
+**解决：** 为每个子目录创建 `_index.md`，设置 `title` 字段。
+
+---
+
+## 11. 护眼模式代码块文字太淡
+
+**现象：** 护眼模式下，代码块内的语法高亮文字对比度低，难以阅读。
+
+**原因：** 护眼主题的 `--code-block-bg` 色值（`#f0f5ed`）与文字色（`#2d3e30`）对比度不够；PaperMod 语法高亮使用 inline style，不受 CSS 变量控制。
+
+**解决：**
+- 加深代码块底色为 `#d4dfcf`
+- 在护眼主题 CSS 中追加 `pre code { color: #1a2a1d }`
+
+---
+
+## 12. 主题切换 flash（PaperMod 脚本覆盖自定义主题）
+
+**现象：** 页面加载时短暂闪一下浅色模式，然后才切换到护眼模式。
+
+**原因：** PaperMod 的 `head.html` 中主题检测脚本只识别 `dark` / `light`，遇到 `eye-care` 会 fallback 到 `light`，覆盖了自定义设置。
+
+**解决：**
+- 在 `head.html` 之前插入脚本，第一时间设 `dataset.theme`
+- 创建 `layouts/partials/extend_head.html`，在 PaperMod 脚本之后再次修正主题
+
+---
+
+## 13. 首页卡片子文章列表过于冗长
+
+**现象：** 安卓应用分类卡片下显示了 5 个子分类的全部文章名，卡片撑得太大。
+
+**原因：** 模板对含子 section 的分类也列出了 `.RegularPages`（所有后代文章）。
+
+**解决：** 首页卡片只显示分类名 + 篇数 + 子分类数，不列文章名。

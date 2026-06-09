@@ -11,85 +11,94 @@
 ```
 LuojMarkdown/
 ├── layouts/                        # 自定义模板（覆盖 PaperMod 默认布局）
-│   ├── index.html                  # 首页：卡片式分类导航
+│   ├── index.html                  # 首页：分层卡片式导航
 │   ├── _default/
-│   │   └── baseof.html             # 全局布局：控制侧边栏显隐、自定义样式
+│   │   └── baseof.html             # 全局布局：顶栏/侧边栏/大纲/搜索/主题
 │   └── partials/
-│       └── sidebar.html            # 文章列表侧边栏（分层大纲）
+│       ├── sidebar.html            # 文章列表侧边栏（三层嵌套）
+│       ├── toc_sidebar.html        # 文章右侧目录大纲
+│       └── extend_head.html        # 默认护眼模式修正
 ├── content/
-│   └── posts/                      # 所有文章
-│       ├── first.md                # 根目录文章
-│       ├── second.md               # 根目录文章
-│       ├── test/                   # 分类：测试
-│       │   ├── _index.md           # 分类页标题配置
-│       │   ├── test1.md
-│       │   ├── test2.md
-│       │   └── test3.md
-│       ├── test2/                  # 分类：测试2
-│       │   ├── _index.md
-│       │   ├── test1.md
-│       │   ├── test2.md
-│       │   └── test3.md
-│       └── notes/                  # 分类：笔记
-│           ├── _index.md
-│           ├── note1.md
-│           └── note2.md
+│   ├── _index.md                   # 首页内容（个人信息/关于/联系）
+│   └── posts/                      # 所有文章（按分类分目录）
+│       ├── 安卓工具/               # ADB相关、实用命令
+│       ├── 安卓应用/               # 含子分类 1-5
+│       │   ├── 1.Java基础/
+│       │   ├── 2.Kotlin基础/
+│       │   ├── 3.Android基础/
+│       │   ├── 4.Android核心组件/
+│       │   └── 5.Android进阶/
+│       ├── 安卓系统/
+│       └── 项目问题/
+├── static/
+│   └── pic/                        # 静态资源（头像、图标）
 ├── themes/
 │   └── PaperMod/                   # 主题（git submodule）
 ├── hugo.toml                       # Hugo 站点配置
+├── README.md
+├── ISSUES.md
 ├── .gitignore
-└── CLAUDE.md                       # Claude Code 项目配置
+└── CLAUDE.md
 ```
 
 ---
 
-## 功能改动记录
+## 功能清单
 
-### 1. 左侧文章列表侧边栏
+### 集成顶栏（sticky 固定）
 
-- **文件**：`layouts/_default/baseof.html`、`layouts/partials/sidebar.html`
-- 文章页面左侧显示固定侧边栏，列出所有文章
-- 侧边栏 `sticky` 定位，跟随滚动
-- 当前文章高亮显示
-- 手机端自动折叠到顶部
+- **文件**：`layouts/_default/baseof.html`
+- Logo + 主题选择 + 全局搜索 + GitHub 图标，合为一条固定栏
+- 滚动时始终悬浮在页面最上方
 
-### 2. 分类大纲结构
+### 全局搜索
 
-- **目录**：`content/posts/test/`、`content/posts/notes/` 等
-- 文章按文件夹分组，每个文件夹是一个分类
-- 分类名由 `_index.md` 中的 `title` 字段定义
-- URL 格式：`/posts/<分类>/<文章slug>/`
+- **文件**：`layouts/_default/baseof.html`
+- 所有页面顶部居中搜索栏，`Ctrl+K` 快速聚焦
+- 搜索文章标题 + 正文，显示匹配片段并高亮关键词
+- 键盘 ↑↓ 导航，Enter 跳转，Esc 关闭
 
-### 3. 分层侧边栏
+### 主题选择器（👕）
+
+- **文件**：`layouts/_default/baseof.html`
+- 三主题：☀️ 浅色 / 🌙 深色 / 🌿 护眼
+- 默认进入护眼模式
+- 选择保存到 localStorage，下次自动恢复
+
+### 左侧文章列表侧边栏（三层嵌套）
 
 - **文件**：`layouts/partials/sidebar.html`
-- 根目录文章直接列出
-- 分类下文章以可折叠分组展示（►/▼ 图标）
-- 分类标题可点击跳转到该分类第一篇文章
-- 默认展开所有分类
+- 支持三层嵌套分类（一级分类 → 子分类 → 文章）
+- 折叠/展开，点击分类标题跳转首篇文章
+- 滚动位置记忆（sessionStorage）
+- 当前文章高亮
 
-### 4. 首页卡片式导航
+### 右侧文章目录大纲
 
-- **文件**：`layouts/index.html`
-- 首页去除侧边栏，居中展示分类卡片
-- 每个卡片显示：分类图标、名称、文章数量、首篇文章
-- 点击卡片跳转到该分类的第一篇文章
-- 根目录文章单独展示为一个卡片，列出所有直接链接
+- **文件**：`layouts/partials/toc_sidebar.html`
+- 自动提取 h1-h4 标题生成层级大纲
+- IntersectionObserver 滚动高亮当前标题
+- 点击平滑跳转，窗口 < 1200px 自动隐藏
 
-### 5. 配置优化
+### 首页分层布局
 
-- **文件**：`hugo.toml`
-- `baseURL` → 实际 Cloudflare 域名
-- `locale` → `zh-cn`（中文）
-- `title` → 自定义博客名
+- **文件**：`layouts/index.html`、`content/_index.md`
+- 个人信息卡片 → 关于本站 → 博客统计 → 内容导航 → 联系我
+- 分类卡片简化，只显示名称+篇数，点击跳转第一篇
+- 统计自动计算（文章数/字数/分类数）
+- 内容全部由 `content/_index.md` 驱动
+
+### 多层分类支持
+
+- 目录命名：`1.Java基础` `2.Kotlin基础`（数字.名称）
+- 子目录需 `_index.md` 定义分类标题
+- 顶级目录（安卓应用/安卓工具等）保持不变
 
 ---
 
 ## 文章编写规范
 
 ### Frontmatter 格式
-
-每篇 `.md` 文章必须以 `+++` 开头和结尾包裹元数据（TOML 格式）：
 
 ```markdown
 +++
@@ -105,32 +114,18 @@ draft = false
 
 | 规则 | 说明 |
 |------|------|
-| `+++` 必须成对 | 开头一个 `+++`，结尾一个 `+++`，缺一不可 |
-| `draft = false` | 必须设为 `false`，否则生产环境不会渲染 |
-| `date` 用过去时间 | Hugo 将 `date` 作为发布时间，未来时间会被跳过 |
-| 文件编码 | 保存为 **UTF-8 无 BOM**（VS Code 等现代编辑器默认如此） |
-| 不要用 PowerShell `Set-Content` 创建文件 | 它会自动加 BOM 头，Hugo 可能识别异常 |
-
-### 新建文章
-
-直接在 `content/posts/` 下新建 `.md` 文件：
-
-```bash
-# 根目录文章
-content/posts/我的文章.md
-
-# 分类文章（需先在分类目录下创建 _index.md）
-content/posts/笔记/笔记三.md
-```
-
-`git push` 后 Cloudflare Pages 自动构建部署。
+| `+++` 必须成对 | 开头末尾缺一不可 |
+| `draft = false` | 否则生产环境不渲染 |
+| `date` 用过去时间 | 未来时间会被跳过 |
+| UTF-8 无 BOM | VS Code 等编辑器默认即可 |
+| 不要用 PowerShell `Set-Content` | 会自动加 BOM |
 
 ### 新建分类
 
 ```bash
 mkdir content/posts/新分类
 echo '+++' > content/posts/新分类/_index.md
-echo 'title = "新分类名称"' >> content/posts/新分类/_index.md
+echo "title = '新分类名称'" >> content/posts/新分类/_index.md
 echo '+++' >> content/posts/新分类/_index.md
 ```
 
@@ -139,14 +134,13 @@ echo '+++' >> content/posts/新分类/_index.md
 ## 部署
 
 1. 编辑文章，`git push` 到 `master` 分支
-2. Cloudflare Pages 自动检测变更并构建
-3. 1-2 分钟后刷新博客即可看到更新
+2. Cloudflare Pages 自动构建部署
+3. 1-2 分钟后刷新
 
 ## 本地预览
 
 ```bash
-hugo server -D    # -D 包含草稿
+hugo server -D
 ```
 
 访问 `http://localhost:1313/`
-
