@@ -4,9 +4,9 @@
         <h3>📂 文章列表</h3>
     </div>
     <nav class="sidebar-nav">
-        {{- /* 根目录下的文章 */}}
-        {{- with $postsSection }}
-            {{- range .RegularPages }}
+        {{- /* 根目录文章（直接属于 /posts 的页面） */}}
+        {{- range $postsSection.Pages }}
+            {{- if eq .Kind "page" }}
             <li class="sidebar-page">
                 <a href="{{ .RelPermalink }}" class="{{ if eq $.RelPermalink .RelPermalink }}active{{ end }}">
                     {{ .Title }}
@@ -15,22 +15,61 @@
             {{- end }}
         {{- end }}
 
-        {{- /* 按分类分组的子目录文章 */}}
+        {{- /* 一级分类 */}}
         {{- range $postsSection.Sections.ByTitle }}
+        {{- $section := . }}
+        {{- $directPages := slice }}
+        {{- range .Pages }}
+            {{- if eq .Kind "page" }}
+                {{- $directPages = $directPages | append . }}
+            {{- end }}
+        {{- end }}
+        {{- $subSections := .Sections.ByTitle }}
         {{- $firstPage := index (.RegularPages.ByDate) 0 }}
+
         <div class="sidebar-section">
             <details class="sidebar-details" open>
                 <summary class="section-title-wrapper">
-                    <span class="expand-icon" onclick="event.stopPropagation()">▶</span>
+                    <span class="expand-icon">▶</span>
                     <span class="folder-icon">📁</span>
                     <a class="section-link" href="{{ if $firstPage }}{{ $firstPage.RelPermalink }}{{ else }}{{ .RelPermalink }}{{ end }}">{{ .Title }}</a>
                 </summary>
                 <ul class="section-pages">
-                    {{- range .RegularPages.ByTitle }}
+                    {{- /* 直接文章 */}}
+                    {{- range $directPages }}
                     <li>
                         <a href="{{ .RelPermalink }}" class="{{ if eq $.RelPermalink .RelPermalink }}active{{ end }}">
                             {{ .Title }}
                         </a>
+                    </li>
+                    {{- end }}
+
+                    {{- /* 子分类 */}}
+                    {{- range $subSections }}
+                    {{- $subDirectPages := slice }}
+                    {{- range .Pages }}
+                        {{- if eq .Kind "page" }}
+                            {{- $subDirectPages = $subDirectPages | append . }}
+                        {{- end }}
+                    {{- end }}
+                    {{- $subFirst := index (.RegularPages.ByDate) 0 }}
+                    <li class="sidebar-subsection">
+                        <details class="sidebar-details" open>
+                            <summary class="section-title-wrapper">
+                                <span class="expand-icon">▶</span>
+                                <span class="folder-icon">📂</span>
+                                <a class="section-link" href="{{ if $subFirst }}{{ $subFirst.RelPermalink }}{{ else }}{{ .RelPermalink }}{{ end }}">{{ .Title }}</a>
+                            </summary>
+                            <ul class="section-pages">
+                                {{- range $subDirectPages }}
+                                <li>
+                                    <a href="{{ .RelPermalink }}" class="{{ if eq $.RelPermalink .RelPermalink }}active{{ end }}">
+                                        {{ .Title }}
+                                    </a>
+                                </li>
+                                {{- end }}
+                            </ul>
+                        </details>
                     </li>
                     {{- end }}
                 </ul>

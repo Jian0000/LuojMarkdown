@@ -9,7 +9,15 @@
     {{- $totalPosts = add $totalPosts 1 }}
     {{- $totalWords = add $totalWords .WordCount }}
 {{- end }}
-{{- $totalSections := len $postsSection.Sections }}
+{{- /* 统计所有 section（含嵌套） */}}
+{{- $.Scratch.Set "secCount" 0 }}
+{{- range $postsSection.Sections }}
+    {{- $.Scratch.Add "secCount" 1 }}
+    {{- range .Sections }}
+        {{- $.Scratch.Add "secCount" 1 }}
+    {{- end }}
+{{- end }}
+{{- $totalSections := $.Scratch.Get "secCount" }}
 
 {{- /* ============================================ */}}
 {{- /*  1. 个人信息卡片                               */}}
@@ -86,20 +94,37 @@
         {{- /* 子目录分类 */}}
         {{- range $postsSection.Sections.ByTitle }}
         {{- $firstPage := index (.RegularPages.ByDate) 0 }}
-        <a class="category-card card-link" href="{{ if $firstPage }}{{ $firstPage.RelPermalink }}{{ else }}{{ .RelPermalink }}{{ end }}">
+        {{- $subSections := .Sections.ByTitle }}
+        <div class="category-card">
             <div class="card-icon">
                 {{- $t := lower .Title }}
                 {{- if or (in $t "test") (in $t "测试") }}🧪
                 {{- else if or (in $t "note") (in $t "笔记") }}📓
+                {{- else if or (in $t "android") (in $t "安卓") }}📱
+                {{- else if or (in $t "工具") (in $t "tool") }}🔧
+                {{- else if or (in $t "系统") (in $t "system") }}⚙️
+                {{- else if or (in $t "项目") (in $t "问题") }}📋
                 {{- else }}📁
                 {{- end }}
             </div>
             <h3 class="card-title">{{ .Title }}</h3>
-            <p class="card-count">{{ len .RegularPages }} 篇</p>
-            {{- if $firstPage }}
-            <p class="card-first">首篇：{{ $firstPage.Title }}</p>
+            {{- if gt (len $subSections) 0 }}
+                <p class="card-count">{{ len $subSections }} 个子分类</p>
+                <ul class="card-posts">
+                    {{- range $subSections }}
+                    {{- $subFirst := index (.RegularPages.ByDate) 0 }}
+                    <li><a href="{{ if $subFirst }}{{ $subFirst.RelPermalink }}{{ else }}{{ .RelPermalink }}{{ end }}">{{ .Title }}</a></li>
+                    {{- end }}
+                </ul>
+            {{- else }}
+                <p class="card-count">{{ len .RegularPages }} 篇</p>
+                <ul class="card-posts">
+                    {{- range .RegularPages.ByTitle }}
+                    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+                    {{- end }}
+                </ul>
             {{- end }}
-        </a>
+        </div>
         {{- end }}
     </div>
 </section>
