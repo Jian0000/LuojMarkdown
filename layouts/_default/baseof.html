@@ -361,20 +361,15 @@
             color: var(--primary);
             font-weight: 500;
         }
-        html.has-bg-sunset { --bg-overlay: linear-gradient(135deg, rgba(255,107,107,0.08), rgba(254,202,87,0.08)); }
-        html.has-bg-ocean { --bg-overlay: linear-gradient(135deg, rgba(72,219,251,0.08), rgba(10,189,227,0.08)); }
-        html.has-bg-forest { --bg-overlay: linear-gradient(135deg, rgba(46,213,115,0.08), rgba(123,237,159,0.08)); }
-        html.has-bg-midnight { --bg-overlay: linear-gradient(135deg, rgba(44,62,80,0.12), rgba(52,152,219,0.12)); }
-        html.has-bg-lavender { --bg-overlay: linear-gradient(135deg, rgba(162,155,254,0.1), rgba(108,92,231,0.1)); }
-        html.has-bg-warm { --bg-overlay: linear-gradient(135deg, rgba(240,147,251,0.08), rgba(245,87,108,0.08)); }
-        html.has-bg-mocha { --bg-overlay: linear-gradient(135deg, rgba(212,163,112,0.1), rgba(250,237,205,0.1)); }
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: var(--bg-overlay, none);
-            pointer-events: none;
-            z-index: -1;
+        html.has-bg-sunset { --bg-overlay: linear-gradient(135deg, rgba(255,107,107,0.2), rgba(254,202,87,0.2)); }
+        html.has-bg-ocean { --bg-overlay: linear-gradient(135deg, rgba(72,219,251,0.2), rgba(10,189,227,0.2)); }
+        html.has-bg-forest { --bg-overlay: linear-gradient(135deg, rgba(46,213,115,0.2), rgba(123,237,159,0.2)); }
+        html.has-bg-midnight { --bg-overlay: linear-gradient(135deg, rgba(44,62,80,0.2), rgba(52,152,219,0.2)); }
+        html.has-bg-lavender { --bg-overlay: linear-gradient(135deg, rgba(162,155,254,0.2), rgba(108,92,231,0.2)); }
+        html.has-bg-warm { --bg-overlay: linear-gradient(135deg, rgba(240,147,251,0.2), rgba(245,87,108,0.2)); }
+        html.has-bg-mocha { --bg-overlay: linear-gradient(135deg, rgba(212,163,112,0.2), rgba(250,237,205,0.2)); }
+        body {
+            background: var(--bg-overlay, none), var(--theme);
         }
 
         .topbar-center {
