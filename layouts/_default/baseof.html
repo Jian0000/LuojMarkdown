@@ -259,7 +259,7 @@
         .topbar-logo:hover {
             text-decoration: underline;
         }
-        /* ===== 背景选择器 ===== */
+        /* ===== 主题选择器 ===== */
         .bg-picker-wrap {
             position: relative;
         }
@@ -272,10 +272,7 @@
             border: none;
             border-radius: 6px;
             background: transparent;
-            color: var(--secondary);
             cursor: pointer;
-            font-size: 1.1em;
-            line-height: 1;
             transition: background 0.15s;
         }
         .topbar-bg-btn:hover {
@@ -286,12 +283,12 @@
             top: calc(100% + 6px);
             left: 50%;
             transform: translateX(-50%);
-            width: 280px;
+            width: 300px;
             background: var(--entry);
             border: 1px solid var(--border);
             border-radius: 12px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-            padding: 14px;
+            padding: 16px;
             display: none;
             z-index: 1001;
         }
@@ -299,77 +296,79 @@
             display: block;
         }
         .bg-picker-title {
-            font-size: 0.85em;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-        .bg-picker-theme {
-            margin-bottom: 10px;
-        }
-        .bg-theme-btn {
-            width: 100%;
-            padding: 6px 12px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--theme);
-            color: var(--primary);
             font-size: 0.82em;
-            cursor: pointer;
-            transition: background 0.15s;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 12px;
         }
-        .bg-theme-btn:hover {
-            background: var(--entry);
+        .bg-picker-themes {
+            display: flex;
+            gap: 10px;
         }
-        .bg-theme-btn .bg-theme-dark { display: none; }
-        html[data-theme="dark"] .bg-theme-btn .bg-theme-dark { display: inline; }
-        html[data-theme="dark"] .bg-theme-btn .bg-theme-light { display: none; }
-        .bg-picker-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-        }
-        .bg-option {
+        .theme-option {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
+            gap: 6px;
             cursor: pointer;
-            padding: 6px 4px;
-            border-radius: 8px;
+            padding: 10px 8px;
+            border-radius: 10px;
+            flex: 1;
             transition: background 0.15s;
         }
-        .bg-option:hover {
+        .theme-option:hover {
             background: var(--theme);
         }
-        .bg-option.active {
+        .theme-option.active {
             outline: 2px solid var(--primary);
-            outline-offset: 2px;
+            outline-offset: -2px;
         }
-        .bg-preview {
+        .theme-preview {
             width: 100%;
-            aspect-ratio: 16/10;
-            border-radius: 6px;
+            aspect-ratio: 1.6;
+            border-radius: 8px;
             border: 1px solid var(--border);
         }
-        .bg-option span {
-            font-size: 0.7em;
+        .theme-preview-light {
+            background: #f5f5f5;
+        }
+        .theme-preview-dark {
+            background: #1d1e20;
+        }
+        .theme-preview-eye {
+            background: #e8f0e3;
+        }
+        .theme-option span {
+            font-size: 0.82em;
             color: var(--secondary);
             white-space: nowrap;
         }
-        .bg-option.active span {
+        .theme-option.active span {
             color: var(--primary);
-            font-weight: 500;
+            font-weight: 600;
         }
-        html.has-bg-sunset { --bg-overlay: linear-gradient(135deg, rgba(255,107,107,0.2), rgba(254,202,87,0.2)); }
-        html.has-bg-ocean { --bg-overlay: linear-gradient(135deg, rgba(72,219,251,0.2), rgba(10,189,227,0.2)); }
-        html.has-bg-forest { --bg-overlay: linear-gradient(135deg, rgba(46,213,115,0.2), rgba(123,237,159,0.2)); }
-        html.has-bg-midnight { --bg-overlay: linear-gradient(135deg, rgba(44,62,80,0.2), rgba(52,152,219,0.2)); }
-        html.has-bg-lavender { --bg-overlay: linear-gradient(135deg, rgba(162,155,254,0.2), rgba(108,92,231,0.2)); }
-        html.has-bg-warm { --bg-overlay: linear-gradient(135deg, rgba(240,147,251,0.2), rgba(245,87,108,0.2)); }
-        html.has-bg-mocha { --bg-overlay: linear-gradient(135deg, rgba(212,163,112,0.2), rgba(250,237,205,0.2)); }
-        body {
-            background: var(--bg-overlay, none), var(--theme);
+
+        /* ===== 护眼主题 ===== */
+        html[data-theme="eye-care"] {
+            --theme: #e8f0e3;
+            --entry: #ffffff;
+            --primary: #3a5a40;
+            --secondary: #6b8f71;
+            --tertiary: #a3b899;
+            --content: #2d3e30;
+            --code-block-bg: #f0f5ed;
+            --code-bg: #e6f0e2;
+            --border: #c5d5bf;
+            color-scheme: light;
+        }
+        html[data-theme="eye-care"] body {
+            background: var(--theme);
+        }
+        html[data-theme="eye-care"] .list {
+            background: var(--theme);
+        }
+        html[data-theme="eye-care"] .topbar {
+            background: var(--theme);
         }
 
         .topbar-center {
@@ -527,45 +526,19 @@
                         <img src="{{ "/pic/clothes.png" | relURL }}" alt="背景" width="17" height="17" style="display:block">
                     </button>
                     <div class="bg-picker-dropdown" id="bgPickerDropdown">
-                        <div class="bg-picker-title">选择背景</div>
-                        <div class="bg-picker-theme">
-                            <button id="theme-toggle" class="bg-theme-btn" title="切换浅色/深色模式">
-                                <span class="bg-theme-light">☀️ 浅色</span>
-                                <span class="bg-theme-dark">🌙 深色</span>
-                            </button>
-                        </div>
-                        <div class="bg-picker-grid">
-                            <div class="bg-option" data-bg="" title="默认">
-                                <div class="bg-preview" style="background:var(--theme)"></div>
-                                <span>默认</span>
+                        <div class="bg-picker-title">选择主题</div>
+                        <div class="bg-picker-themes">
+                            <div class="theme-option" data-theme="light" id="themeOptionLight">
+                                <div class="theme-preview theme-preview-light"></div>
+                                <span>☀️ 浅色</span>
                             </div>
-                            <div class="bg-option" data-bg="gradient-sunset" title="落日">
-                                <div class="bg-preview" style="background:linear-gradient(135deg,#ff6b6b,#feca57)"></div>
-                                <span>落日</span>
+                            <div class="theme-option" data-theme="dark" id="themeOptionDark">
+                                <div class="theme-preview theme-preview-dark"></div>
+                                <span>🌙 深色</span>
                             </div>
-                            <div class="bg-option" data-bg="gradient-ocean" title="海洋">
-                                <div class="bg-preview" style="background:linear-gradient(135deg,#48dbfb,#0abde3)"></div>
-                                <span>海洋</span>
-                            </div>
-                            <div class="bg-option" data-bg="gradient-forest" title="森林">
-                                <div class="bg-preview" style="background:linear-gradient(135deg,#2ed573,#7bed9f)"></div>
-                                <span>森林</span>
-                            </div>
-                            <div class="bg-option" data-bg="gradient-midnight" title="午夜">
-                                <div class="bg-preview" style="background:linear-gradient(135deg,#2c3e50,#3498db)"></div>
-                                <span>午夜</span>
-                            </div>
-                            <div class="bg-option" data-bg="gradient-lavender" title="薰衣草">
-                                <div class="bg-preview" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7)"></div>
-                                <span>薰衣草</span>
-                            </div>
-                            <div class="bg-option" data-bg="gradient-warm" title="暖阳">
-                                <div class="bg-preview" style="background:linear-gradient(135deg,#f093fb,#f5576c)"></div>
-                                <span>暖阳</span>
-                            </div>
-                            <div class="bg-option" data-bg="gradient-mocha" title="摩卡">
-                                <div class="bg-preview" style="background:linear-gradient(135deg,#d4a373,#faedcd)"></div>
-                                <span>摩卡</span>
+                            <div class="theme-option" data-theme="eye-care" id="themeOptionEyeCare">
+                                <div class="theme-preview theme-preview-eye"></div>
+                                <span>🌿 护眼</span>
                             </div>
                         </div>
                     </div>
@@ -638,66 +611,49 @@
     </script>
 
     <script>
-    /* ===== 背景选择器 ===== */
+    /* ===== 主题选择器 ===== */
     (function() {
         var btn = document.getElementById('bgPickerBtn');
         var dd = document.getElementById('bgPickerDropdown');
         if (!btn || !dd) return;
 
         var html = document.documentElement;
+        var options = dd.querySelectorAll('.theme-option');
 
-        /* 恢复上次选择的背景 */
-        var saved = localStorage.getItem('blog-bg');
-        if (saved) {
-            dd.querySelectorAll('.bg-option').forEach(function(o) {
-                if (o.getAttribute('data-bg') === saved) o.classList.add('active');
-            });
-            html.classList.add('has-bg-' + saved);
+        /* 恢复上次主题 */
+        var saved = localStorage.getItem('pref-theme');
+        if (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            saved = 'dark';
+        } else if (!saved) {
+            saved = 'light';
         }
+        applyTheme(saved);
 
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
             dd.classList.toggle('show');
         });
 
-        dd.querySelectorAll('.bg-option').forEach(function(opt) {
+        options.forEach(function(opt) {
             opt.addEventListener('click', function(e) {
                 e.stopPropagation();
-                var bg = this.getAttribute('data-bg');
-                dd.querySelectorAll('.bg-option').forEach(function(o) { o.classList.remove('active'); });
-                this.classList.add('active');
-
-                var cls = html.className.split(' ').filter(function(c) { return !c.startsWith('has-bg-'); });
-                if (bg) {
-                    cls.push('has-bg-' + bg);
-                    localStorage.setItem('blog-bg', bg);
-                } else {
-                    localStorage.removeItem('blog-bg');
-                }
-                html.className = cls.join(' ').trim();
-
-                setTimeout(function() { dd.classList.remove('show'); }, 300);
+                var theme = this.getAttribute('data-theme');
+                applyTheme(theme);
+                setTimeout(function() { dd.classList.remove('show'); }, 200);
             });
         });
 
         document.addEventListener('click', function() { dd.classList.remove('show'); });
         dd.addEventListener('click', function(e) { e.stopPropagation(); });
-    })();
 
-    /* ===== 浅色/深色切换（在背景面板内） ===== */
-    (function() {
-        var btn = document.getElementById('theme-toggle');
-        if (!btn) return;
-        btn.addEventListener('click', function() {
-            var h = document.querySelector('html');
-            if (h.dataset.theme === 'dark') {
-                h.dataset.theme = 'light';
-                localStorage.setItem('pref-theme', 'light');
-            } else {
-                h.dataset.theme = 'dark';
-                localStorage.setItem('pref-theme', 'dark');
-            }
-        });
+        function applyTheme(theme) {
+            options.forEach(function(o) { o.classList.remove('active'); });
+            var el = dd.querySelector('.theme-option[data-theme="' + theme + '"]');
+            if (el) el.classList.add('active');
+
+            html.dataset.theme = theme;
+            localStorage.setItem('pref-theme', theme);
+        }
     })();
     </script>
 
