@@ -17,8 +17,9 @@ description = "探索文章分类，点击卡片开始阅读"
 
 <!-- 关于本站的内容写在这里，支持 Markdown -->
 
-这里是我利用 **Hugo + GitHub + Cloudflare Pages** 搭建的个人博客。
+基于 **Hugo + GitHub + Cloudflare Pages** 搭建的个人博客。
 
 主要分享：
-- 💻 编程技术笔记
-- 📚 学习总结
+- 编程技术笔记
+- 学习总结
+- 项目问题总结
