@@ -1,0 +1,9 @@
+<script>
+    var t = localStorage.getItem('pref-theme');
+    if (!t || (t !== 'dark' && t !== 'light' && t !== 'eye-care')) {
+        localStorage.setItem('pref-theme', 'eye-care');
+        document.querySelector('html').dataset.theme = 'eye-care';
+    } else if (t === 'eye-care') {
+        document.querySelector('html').dataset.theme = 'eye-care';
+    }
+</script>

@@ -13,6 +13,10 @@
 {{- end }}
 
 <head>
+    <script>
+        var _t = localStorage.getItem('pref-theme')||'eye-care';
+        document.querySelector('html').dataset.theme = _t;
+    </script>
     {{- partial "head.html" . }}
     <style>
         .layout-wrapper {
@@ -651,10 +655,8 @@
 
         /* 恢复上次主题 */
         var saved = localStorage.getItem('pref-theme');
-        if (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            saved = 'dark';
-        } else if (!saved) {
-            saved = 'light';
+        if (!saved) {
+            saved = 'eye-care';
         }
         applyTheme(saved);
 
