@@ -22,11 +22,14 @@
             padding: 0 20px;
             gap: 30px;
         }
+        html {
+            scroll-padding-top: 60px;
+        }
         .sidebar {
             width: 260px;
             flex-shrink: 0;
             position: sticky;
-            top: 80px;
+            top: 60px;
             align-self: flex-start;
             max-height: calc(100vh - 100px);
             overflow-y: auto;
@@ -149,7 +152,7 @@
             width: 220px;
             flex-shrink: 0;
             position: sticky;
-            top: 80px;
+            top: 60px;
             align-self: flex-start;
             max-height: calc(100vh - 100px);
             overflow-y: auto;
@@ -370,6 +373,19 @@
         html[data-theme="eye-care"] .topbar {
             background: var(--theme);
         }
+        /* 护眼模式：代码块底色加深，文字更清晰 */
+        html[data-theme="eye-care"] .highlight,
+        html[data-theme="eye-care"] pre {
+            background: #d4dfcf !important;
+            border: 1px solid #bcc9b5;
+        }
+        html[data-theme="eye-care"] code {
+            background: #d4dfcf;
+            color: #1a2a1d;
+        }
+        html[data-theme="eye-care"] pre code {
+            color: #1a2a1d;
+        }
 
         .topbar-center {
             position: relative;
@@ -574,6 +590,19 @@
     </div>
     {{- end }}
     {{ partialCached "footer.html" . .Layout .Kind (.Param "hideFooter") (.Param "ShowCodeCopyButtons") -}}
+
+    <script>
+    /* ===== 侧边栏滚动记忆 ===== */
+    (function() {
+        var sidebar = document.getElementById('sidebar');
+        if (!sidebar) return;
+        var saved = sessionStorage.getItem('sidebar-scroll');
+        if (saved) sidebar.scrollTop = parseInt(saved, 10);
+        sidebar.addEventListener('scroll', function() {
+            sessionStorage.setItem('sidebar-scroll', sidebar.scrollTop);
+        });
+    })();
+    </script>
 
     <script>
     /* TOC 滚动高亮 */
