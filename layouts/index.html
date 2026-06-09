@@ -76,55 +76,34 @@
 <section class="home-section home-categories">
     <h2 class="section-title">🗂️ 内容导航</h2>
     <div class="categories-grid">
-        {{- /* 根目录文章 */}}
-        {{- $rootPages := $postsSection.RegularPages }}
-        {{- if gt (len $rootPages) 0 }}
-        <div class="category-card">
-            <div class="card-icon">📝</div>
-            <h3 class="card-title">文章</h3>
-            <p class="card-count">{{ len $rootPages }} 篇</p>
-            <ul class="card-posts">
-                {{- range $rootPages.ByTitle }}
-                <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-                {{- end }}
-            </ul>
-        </div>
-        {{- end }}
-
-        {{- /* 子目录分类 */}}
+        {{- /* 分类导航（简化卡片，只显示分类名+篇数） */}}
         {{- range $postsSection.Sections.ByTitle }}
         {{- $firstPage := index (.RegularPages.ByDate) 0 }}
         {{- $subSections := .Sections.ByTitle }}
-        <div class="category-card">
+        {{- $totalPosts := len .RegularPages }}
+        {{- $label := "篇" }}
+        {{- if gt (len $subSections) 0 }}
+            {{- $totalPosts = 0 }}
+            {{- range .Sections }}{{ $totalPosts = add $totalPosts (len .RegularPages) }}{{ end }}
+        {{- end }}
+        <a class="category-card card-link" href="{{ if $firstPage }}{{ $firstPage.RelPermalink }}{{ else }}{{ .RelPermalink }}{{ end }}">
             <div class="card-icon">
                 {{- $t := lower .Title }}
                 {{- if or (in $t "test") (in $t "测试") }}🧪
                 {{- else if or (in $t "note") (in $t "笔记") }}📓
-                {{- else if or (in $t "android") (in $t "安卓") }}📱
                 {{- else if or (in $t "工具") (in $t "tool") }}🔧
                 {{- else if or (in $t "系统") (in $t "system") }}⚙️
                 {{- else if or (in $t "项目") (in $t "问题") }}📋
+                {{- else if or (in $t "android") (in $t "安卓") }}📱
                 {{- else }}📁
                 {{- end }}
             </div>
             <h3 class="card-title">{{ .Title }}</h3>
+            <p class="card-count">{{ $totalPosts }} 篇</p>
             {{- if gt (len $subSections) 0 }}
-                <p class="card-count">{{ len $subSections }} 个子分类</p>
-                <ul class="card-posts">
-                    {{- range $subSections }}
-                    {{- $subFirst := index (.RegularPages.ByDate) 0 }}
-                    <li><a href="{{ if $subFirst }}{{ $subFirst.RelPermalink }}{{ else }}{{ .RelPermalink }}{{ end }}">{{ .Title }}</a></li>
-                    {{- end }}
-                </ul>
-            {{- else }}
-                <p class="card-count">{{ len .RegularPages }} 篇</p>
-                <ul class="card-posts">
-                    {{- range .RegularPages.ByTitle }}
-                    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-                    {{- end }}
-                </ul>
+            <p class="card-first">{{ len $subSections }} 个子分类</p>
             {{- end }}
-        </div>
+        </a>
         {{- end }}
     </div>
 </section>
