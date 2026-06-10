@@ -1,5 +1,5 @@
 +++
-title = 'Android Framework Console 命令速查'
+title = 'AndroidFrameworkConsole命令速查'
 date = '2026-06-09T17:04:00+08:00'
 draft = false
 +++

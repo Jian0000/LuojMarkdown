@@ -1,5 +1,5 @@
 +++
-title = '3.1 Bootloader：U-Boot + 安全启动'
+title = '07-3.1Bootloader：U-Boot+安全启动'
 date = '2026-06-09T17:02:00+08:00'
 draft = false
 +++

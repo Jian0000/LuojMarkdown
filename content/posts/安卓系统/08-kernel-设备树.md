@@ -1,5 +1,5 @@
 +++
-title = '3.2 Kernel 构建与设备树'
+title = '08-3.2Kernel构建与设备树'
 date = '2026-06-09T17:03:00+08:00'
 draft = false
 +++
