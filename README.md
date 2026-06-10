@@ -17,7 +17,8 @@ LuojMarkdown/
 │   └── partials/
 │       ├── sidebar.html            # 文章列表侧边栏（三层嵌套）
 │       ├── toc_sidebar.html        # 文章右侧目录大纲
-│       └── extend_head.html        # 默认护眼模式修正
+│       ├── extend_head.html        # 默认护眼模式修正
+│       └── giscus.html             # Giscus 留言板组件
 ├── content/
 │   ├── _index.md                   # 首页内容（个人信息/关于/联系）
 │   └── posts/                      # 所有文章（按分类分目录）
@@ -29,7 +30,9 @@ LuojMarkdown/
 │       │   ├── 4.Android核心组件/
 │       │   └── 5.Android进阶/
 │       ├── 安卓系统/
-│       └── 项目问题/
+│       ├── 项目问题/
+│       ├── 日常知识/
+│       └── 练习实操/
 ├── static/
 │   └── pic/                        # 静态资源（头像、图标）
 ├── themes/
@@ -84,10 +87,17 @@ LuojMarkdown/
 ### 首页分层布局
 
 - **文件**：`layouts/index.html`、`content/_index.md`
-- 个人信息卡片 → 关于本站 → 博客统计 → 内容导航 → 联系我
+- 个人信息卡片 → 关于本站 → 博客统计 → 内容导航 → 留言板 → 联系我
 - 分类卡片简化，只显示名称+篇数，点击跳转第一篇
 - 统计自动计算（文章数/字数/分类数）
 - 内容全部由 `content/_index.md` 驱动
+
+### Giscus 留言板
+
+- **文件**：`layouts/partials/giscus.html`
+- 基于 GitHub Discussions，存储在 `Jian0000/LuojMarkdown`
+- 用户需 GitHub 登录后评论
+- 位于主页内容导航和联系我之间
 
 ### 多层分类 + 递进式标题
 
