@@ -110,7 +110,17 @@
 </section>
 
 {{- /* ============================================ */}}
-{{- /*  5. 联系我                                    */}}
+{{- /*  5. 留言板                                    */}}
+{{- /* ============================================ */}}
+<section class="home-section home-guestbook">
+    <h2 class="section-title">💬 留言板</h2>
+    <div class="guestbook-body">
+        {{ partial "giscus.html" . }}
+    </div>
+</section>
+
+{{- /* ============================================ */}}
+{{- /*  6. 联系我                                    */}}
 {{- /* ============================================ */}}
 {{- with .Params.contact }}
 <section class="home-section home-contact">
@@ -274,7 +284,18 @@
         font-weight: 500;
     }
 
-    /* ---- 5. 联系我 ---- */
+    /* ---- 5. 留言板 ---- */
+    .home-guestbook .guestbook-body {
+        background: var(--entry);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px 24px;
+    }
+    .giscus-wrapper {
+        min-height: 100px;
+    }
+
+    /* ---- 6. 联系我 ---- */
     .contact-body {
         background: var(--entry);
         border: 1px solid var(--border);
