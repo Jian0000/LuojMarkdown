@@ -78,13 +78,14 @@
     <div class="categories-grid">
         {{- /* 分类导航（简化卡片，只显示分类名+篇数） */}}
         {{- range $postsSection.Sections.ByTitle }}
-        {{- $firstPage := index (.RegularPages.ByDate) 0 }}
         {{- $subSections := .Sections.ByTitle }}
         {{- $totalPosts := len .RegularPages }}
-        {{- $label := "篇" }}
+        {{- $firstPage := index (.RegularPages.ByTitle) 0 }}
         {{- if gt (len $subSections) 0 }}
             {{- $totalPosts = 0 }}
             {{- range .Sections }}{{ $totalPosts = add $totalPosts (len .RegularPages) }}{{ end }}
+            {{- $firstSub := index $subSections 0 }}
+            {{- $firstPage = index ($firstSub.RegularPages.ByTitle) 0 }}
         {{- end }}
         <a class="category-card card-link" href="{{ if $firstPage }}{{ $firstPage.RelPermalink }}{{ else }}{{ .RelPermalink }}{{ end }}">
             <div class="card-icon">
