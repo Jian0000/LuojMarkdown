@@ -15,8 +15,8 @@
             {{- end }}
         {{- end }}
 
-        {{- /* 一级分类 */}}
-        {{- range $postsSection.Sections.ByTitle }}
+        {{- /* 一级分类（按 weight 排序，weight 越小越靠前） */}}
+        {{- range $postsSection.Sections.ByWeight }}
         {{- $section := . }}
         {{- $directPages := slice }}
         {{- range .Pages.ByTitle }}

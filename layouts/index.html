@@ -76,8 +76,8 @@
 <section class="home-section home-categories">
     <h2 class="section-title">🗂️ 内容导航</h2>
     <div class="categories-grid">
-        {{- /* 分类导航（简化卡片，只显示分类名+篇数） */}}
-        {{- range $postsSection.Sections.ByTitle }}
+        {{- /* 分类导航（按 weight 排序） */}}
+        {{- range $postsSection.Sections.ByWeight }}
         {{- $subSections := .Sections.ByTitle }}
         {{- $totalPosts := len .RegularPages }}
         {{- $firstPage := index (.RegularPages.ByTitle) 0 }}
