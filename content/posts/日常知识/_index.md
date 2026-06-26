@@ -1,5 +1,4 @@
 +++
 weight = 10
-title = "日常知识"
+title = "鏃ュ父鐭ヨ瘑"
 +++
-weight = 10
